@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pegon Converter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+      background-color: #f5f5f5;
+    }
+    textarea, input, button {
+      display: block;
+      width: 100%;
+      margin-top: 1em;
+      padding: 0.5em;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Konversi Teks ke Pegon</h1>
+  <label for="latin">Teks Latin:</label>
+  <textarea id="latin" rows="4" placeholder="Masukkan teks Latin..."></textarea>
+
+  <label for="pegon">Hasil Pegon:</label>
+  <textarea id="pegon" rows="4" readonly></textarea>
+
+  <button onclick="convertToPegon()">Konversi</button>
+
+  <script>
+    function convertToPegon() {
+      const latin = document.getElementById("latin").value;
+      // Ganti ini dengan logika Pegon kamu sendiri nanti
+      const pegon = latin
+        .replace(/a/g, "ا")
+        .replace(/b/g, "ب")
+        .replace(/t/g, "ت");
+      document.getElementById("pegon").value = pegon;
+    }
+  </script>
+</body>
+</html>
