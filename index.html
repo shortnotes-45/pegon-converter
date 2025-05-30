@@ -17,10 +17,20 @@
       padding: 0.5em;
       font-size: 1em;
     }
+    button {
+      background-color: #222;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
+    }
   </style>
 </head>
 <body>
   <h1>Konversi Teks ke Pegon</h1>
+  
   <label for="latin">Teks Latin:</label>
   <textarea id="latin" rows="4" placeholder="Masukkan teks Latin..."></textarea>
 
@@ -30,15 +40,52 @@
   <button onclick="convertToPegon()">Konversi</button>
 
   <script>
+    const petaPegon = {
+      'ng': 'ڠ',
+      'a': 'ا',
+      'b': 'ب',
+      'c': 'چ',
+      'd': 'د',
+      'e': 'ە',
+      'f': 'ف',
+      'g': 'ݢ',
+      'h': 'ه',
+      'i': 'ي',
+      'j': 'ج',
+      'k': 'ک',
+      'l': 'ل',
+      'm': 'م',
+      'n': 'ن',
+      'o': 'و',
+      'p': 'ڤ',
+      'q': 'ق',
+      'r': 'ر',
+      's': 'س',
+      't': 'ت',
+      'u': 'و',
+      'v': 'ۏ',
+      'w': 'ۉ',
+      'x': 'خ',
+      'y': 'ي',
+      'z': 'ز',
+    };
+
     function convertToPegon() {
-      const latin = document.getElementById("latin").value;
-      // Ganti ini dengan logika Pegon kamu sendiri nanti
-      const pegon = latin
-        .replace(/a/g, "ا")
-        .replace(/b/g, "ب")
-        .replace(/t/g, "ت");
-      document.getElementById("pegon").value = pegon;
+      let teks = document.getElementById("latin").value.toLowerCase();
+
+      // Ganti dulu yang dua huruf seperti "ng"
+      teks = teks.replace(/ng/g, petaPegon['ng']);
+
+      // Ganti huruf satu per satu
+      let hasil = '';
+      for (let i = 0; i < teks.length; i++) {
+        const huruf = teks[i];
+        hasil += petaPegon[huruf] || huruf;
+      }
+
+      document.getElementById("pegon").value = hasil;
     }
   </script>
 </body>
 </html>
+
