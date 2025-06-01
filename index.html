@@ -6,7 +6,7 @@
   <title>Pegon Converter - Final</title>
 </head>
 <body>
-  <h1>Converter Pegon Al-Kholiqy</h1>
+  <h1>Converter Pegon Khusus</h1>
   <p>Versi berdasarkan kaidah pribadi (user).</p>
 
   <textarea id="latinInput" rows="4" cols="50" placeholder="Tulis teks Latin di sini..."></textarea>
@@ -19,9 +19,9 @@
   <script>
     const pegonMap = {
       ng: 'ڠ', ny: 'پ', sy: 'ش', kh: 'خ',
-      a: 'ا', i: 'ي', u: 'و', e: 'ٓ', o: 'ؤ',
+      a: 'ا', i: 'ي', u: 'و', e: 'ىٓ', o: 'ؤ',
       b: 'ب', c: 'چ', d: 'د', f: 'ف', g: 'ڮ', h: 'ه',
-      j: 'ج', k: 'ك', l: 'ل', m: 'م', n: 'ن',
+      j: 'ج', k: 'ک', l: 'ل', m: 'م', n: 'ن',
       p: 'ف', q: 'ق', r: 'ر', s: 'س', t: 'ت',
       v: 'ف', w: 'و', x: 'خ', y: 'ي', z: 'ز'
     };
@@ -30,119 +30,137 @@
       a: 'أ', i: 'إي', u: 'أو', o: 'أو', e: 'آ'
     };
 
-    const arabOverride = {
-  allah: 'الله',
-  muhammad: 'محمد',
-  islam: 'إسلام',
-  iman: 'إيمان',
-  ihsan: 'إحسان',
-  amal: 'عمل',
-  akhlak: 'أخلاق',
-  ibadah: 'عباده',
-  sholat: 'صلاة',
-  zakat: 'زكاة',
-  haji: 'حج',
-  umrah: 'عمرة',
-  doa: 'دوعاء',
-  takdir: 'تقدير',
-  syariat: 'شريعة',
-  fiqih: 'فقه',
-  ulama: 'علماء',
-  hadis: 'حديث',
-  nabi: 'نبي',
-  rasul: 'رسول',
-  wahyu: 'واحيو',
-  malaikat: 'ملائكة',
-  jin: 'جن',
-  tauhid: 'توحيد',
-  kafir: 'كافر',
-  munafik: 'منافق',
-  syirik: 'شرك',
-  azab: 'عذاب',
-  rahmat: 'رحمة',
-  masjid: 'مسجد',
-  mihrab: 'محراب',
-  imam: 'إمام',
-  khatib: 'خطيب',
-  khutbah: 'خطبة',
-  wudhu: 'وضوء',
-  tayamum: 'تيمم',
-  najis: 'نجس',
-  halal: 'حلال',
-  haram: 'حرام',
-  fardhu: 'فرض',
-  sunnah: 'سنة',
-  makruh: 'مكروه',
-  mubah: 'مباح',
-  qadha: 'قضاء',
-  qadar: 'قدر',
-  hukum: 'حكم',
-  adil: 'عادل',
-  amanah: 'أمانة',
-  fitnah: 'فتنة',
-  sedekah: 'صدقة',
-  infaq: 'إنفاق',
-  qurban: 'قربان',
-  ilmu: 'علم',
-  akal: 'عقل',
-  fikir: 'فكر',
-  tholib: 'طالب',
-  madrasah: 'مدرسة',
-  ustaz: 'أستاذ',
-  kitab: 'كتاب',
-  makna: 'معنى',
-  tafsir: 'تفسير',
-  huruf: 'حرف',
-  kalam: 'كلام',
-  naskah: 'نسخة',
-  ukhuwah: 'أخوة',
-  hidayah: 'هداية',
-  maulid: 'مولد',
-  isra: 'إسراء',
-  miraj: 'معراج',
-  khilafah: 'خلافة',
-  jamaah: 'جماعة',
-  takbir: 'تكبير',
-  tahmid: 'تحميد',
-  tahlil: 'تهليل',
-  dzikir: 'ذكر',
-  istighfar: 'استغفار',
-  dinar: 'دينار',
-  dirham: 'درهم',
-  riba: 'ربا',
-  syirkah: 'شركة',
-  wakaf: 'وقف',
-  rizki: 'رزق',
-  muamalah: 'معاملة',
-  akad: 'عقد',
-  dunia: 'دنيا',
-  akhirat: 'آخرة',
-  alam: 'عالم',
-  waktu: 'وقت',
-  hikmah: 'حكمة',
-  sabar: 'صبر',
-  ikhlas: 'إخلاص',
-  niat: 'نية',
-  adab: 'أدب',
-  nafs: 'نفس',
-  ruh: 'روح',
-  qalb: 'قلب',
-  lafadz: 'لفظ',
-  taala: 'تعالى',
-  saw: 'ﷺ',
-  ialah: 'إيالاه',
-  alhamdulillah: 'الحمد لله'
-};
+    const angkaMap = {
+      '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
+      '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+    };
 
+    const arabOverride = {
+      allah: 'الله',
+      muhammad: 'محمد',
+      islam: 'إسلام',
+      iman: 'إيمان',
+      ihsan: 'إحسان',
+      amal: 'عمل',
+      akhlak: 'أخلاق',
+      ibadah: 'عبادة',
+      sholat: 'صلاة',
+      zakat: 'زكاة',
+      haji: 'حج',
+      umrah: 'عمرة',
+      doa: 'دعاء',
+      takdir: 'تقدير',
+      syariat: 'شريعة',
+      fiqih: 'فقه',
+      ulama: 'علماء',
+      hadis: 'حديث',
+      nabi: 'نبي',
+      rasul: 'رسول',
+      wahyu: 'وحي',
+      malaikat: 'ملائكة',
+      jin: 'جن',
+      surga: 'جنة',
+      neraka: 'نار',
+      tauhid: 'توحيد',
+      kafir: 'كافر',
+      munafik: 'منافق',
+      syirik: 'شرك',
+      azab: 'عذاب',
+      rahmat: 'رحمة',
+      masjid: 'مسجد',
+      mihrab: 'محراب',
+      mimbar: 'منبر',
+      imam: 'إمام',
+      khatib: 'خطيب',
+      khutbah: 'خطبة',
+      wudhu: 'وضوء',
+      tayamum: 'تيمم',
+      najis: 'نجس',
+      halal: 'حلال',
+      haram: 'حرام',
+      fardhu: 'فرض',
+      sunnah: 'سنة',
+      makruh: 'مكروه',
+      mubah: 'مباح',
+      qadha: 'قضاء',
+      qadar: 'قدر',
+      hukum: 'حكم',
+      adil: 'عادل',
+      amanah: 'أمانة',
+      fitnah: 'فتنة',
+      sedekah: 'صدقة',
+      infaq: 'إنفاق',
+      qurban: 'قربان',
+      ilmu: 'علم',
+      akal: 'عقل',
+      fikir: 'فكر',
+      pelajar: 'طالب',
+      madrasah: 'مدرسة',
+      ustaz: 'أستاذ',
+      kitab: 'كتاب',
+      makna: 'معنى',
+      tafsir: 'تفسير',
+      huruf: 'حرف',
+      kalam: 'كلام',
+      naskah: 'نسخة',
+      ukhuwah: 'أخوة',
+      hidayah: 'هداية',
+      maulid: 'مولد',
+      isra: 'إسراء',
+      miraj: 'معراج',
+      khilafah: 'خلافة',
+      jamaah: 'جماعة',
+      takbir: 'تكبير',
+      tahmid: 'تحميد',
+      tahlil: 'تهليل',
+      dzikir: 'ذكر',
+      istighfar: 'استغفار',
+      dinar: 'دينار',
+      dirham: 'درهم',
+      riba: 'ربا',
+      syirkah: 'شركة',
+      wakaf: 'وقف',
+      rizki: 'رزق',
+      muamalah: 'معاملة',
+      akad: 'عقد',
+      utang: 'دين',
+      dunia: 'دنيا',
+      akhirat: 'آخرة',
+      alam: 'عالم',
+      waktu: 'وقت',
+      hikmah: 'حكمة',
+      sabar: 'صبر',
+      ikhlas: 'إخلاص',
+      niat: 'نية',
+      cinta: 'حب',
+      dosa: 'ذنب',
+      pahala: 'ثواب',
+      adab: 'أدب',
+      nafs: 'نفس',
+      ruh: 'روح',
+      qalb: 'قلب',
+      lafadz: 'لفظ',
+      taala: 'تعالى',
+      saw: 'ﷺ',
+      ialah: 'إيالاه',
+      alhamdulillah: 'الحمد لله'
+    };
 
     function convertToPegon(teks) {
-      let words = teks.split(/(\s+)/); // pisah spasi tetap
+      let words = teks.split(/(\s+)/); // termasuk spasi
       let hasil = '';
 
       for (let kata of words) {
         let lower = kata.toLowerCase();
+
         if (arabOverride[lower]) {
           hasil += arabOverride[lower];
+          continue;
+        }
+
+        if (/^\d+$/.test(kata)) {
+          let arabNum = kata.split('').map(char => angkaMap[char] || char).join('');
+          hasil += arabNum;
           continue;
         }
 
@@ -153,6 +171,7 @@
 
         hasil += convertWord(lower);
       }
+
       return hasil;
     }
 
@@ -160,14 +179,13 @@
       let hasil = '';
       let i = 0;
 
-      // Cek vokal di awal kata
       if (/^[aeiou]/.test(word)) {
         hasil += awalanVokal[word[0]] || word[0];
         i = 1;
       }
 
       while (i < word.length) {
-        let dua = word.slice(i, i+2).toLowerCase();
+        let dua = word.slice(i, i + 2).toLowerCase();
         if (pegonMap[dua]) {
           hasil += pegonMap[dua];
           i += 2;
@@ -177,6 +195,7 @@
         hasil += pegonMap[satu] || word[i];
         i++;
       }
+
       return hasil;
     }
 
