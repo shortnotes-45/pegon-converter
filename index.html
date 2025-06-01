@@ -1,91 +1,89 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pegon Converter</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2em;
-      background-color: #f5f5f5;
-    }
-    textarea, input, button {
-      display: block;
-      width: 100%;
-      margin-top: 1em;
-      padding: 0.5em;
-      font-size: 1em;
-    }
-    button {
-      background-color: #222;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #444;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Pegon Converter - Custom</title>
 </head>
 <body>
-  <h1>Konversi Teks ke Pegon</h1>
-  
-  <label for="latin">Teks Latin:</label>
-  <textarea id="latin" rows="4" placeholder="Masukkan teks Latin..."></textarea>
-
-  <label for="pegon">Hasil Pegon:</label>
-  <textarea id="pegon" rows="4" readonly></textarea>
-
-  <button onclick="convertToPegon()">Konversi</button>
+  <h1>Converter Pegon Khusus</h1>
+  <p>Versi berdasarkan kaidah pribadi (user).</p>
 
   <script>
-    const petaPegon = {
-      'ng': 'ڠ',
-      'a': 'ا',
-      'b': 'ب',
-      'c': 'چ',
-      'd': 'د',
-      'e': 'ە',
-      'f': 'ف',
-      'g': 'ڮ',
-      'h': 'ه',
-      'i': 'ي',
-      'j': 'ج',
-      'k': 'ک',
-      'l': 'ل',
-      'm': 'م',
-      'n': 'ن',
-      'o': 'و',
-      'p': 'ڤ',
-      'q': 'ق',
-      'r': 'ر',
-      's': 'س',
-      't': 'ت',
-      'u': 'و',
-      'v': 'ۏ',
-      'w': 'ۉ',
-      'x': 'خ',
-      'y': 'ي',
-      'z': 'ز',
+    const rules = {
+      vowels: {
+        a: "ا",
+        i: "ي",
+        u: "و",
+        e: "ىٓ",  // tapi biasanya diganti dengan huruf keriting (non-standard Unicode)
+        o: "ؤ" // atau "أو" tergantung posisi
+      },
+      awalanVokal: {
+        i: "إي",
+        u: "أو",
+        a: "أ",
+        o: "أو",
+        e: "آ"
+      },
+      konsonan: {
+        ng: "ڠ",
+        ny: "پ",
+        g: "ڮ",
+        kriting: "ٓ"  // tanda konsonan ber-harakat "e"
+      },
+      diftong: {
+        ai: "ائي",
+        au: "اؤ",
+        oi: "ؤي",
+        ui: "وي",
+        ei: "ئى"
+      },
+      arabLafadz: [
+        ["Allah", "الله"],
+        ["Muhammad", "محمد"],
+        ["Islam", "اسلام"],
+        ["takbir", "تكبير"],
+        ["zakat", "زكاة"],
+        ["sholat", "صلاة"],
+        ["nabi", "نبي"],
+        ["dzikir", "ذكر"],
+        ["lafadz", "لفظ"]
+      ],
+      special: {
+        ialah: "إيالاه",
+        "di ": "دي "
+      }
     };
 
-    function convertToPegon() {
-      let teks = document.getElementById("latin").value.toLowerCase();
-
-      // Ganti dulu yang dua huruf seperti "ng"
-      teks = teks.replace(/ng/g, petaPegon['ng']);
-
-      // Ganti huruf satu per satu
-      let hasil = '';
-      for (let i = 0; i < teks.length; i++) {
-        const huruf = teks[i];
-        hasil += petaPegon[huruf] || huruf;
+    function convertToPegon(input) {
+      // Terapkan konversi khusus "di "
+      for (const key in rules.special) {
+        input = input.replaceAll(new RegExp("\b" + key, "gi"), rules.special[key]);
       }
 
-      document.getElementById("pegon").value = hasil;
+      // Terapkan lafadz Arab langsung
+      for (const [latin, arab] of rules.arabLafadz) {
+        input = input.replaceAll(new RegExp(latin, "gi"), arab);
+      }
+
+      // Tambahkan aturan diftong
+      for (const diftong in rules.diftong) {
+        input = input.replaceAll(new RegExp(diftong, "gi"), rules.diftong[diftong]);
+      }
+
+      // Terapkan aturan awalan vokal
+      input = input.replace(/[aeiou]/gi, match => rules.awalanVokal[match.toLowerCase()] || match);
+
+      // Gantikan "ng", "ny", dan "g"
+      input = input.replace(/ng/gi, rules.konsonan.ng);
+      input = input.replace(/ny/gi, rules.konsonan.ny);
+      input = input.replace(/g(?!h)/gi, rules.konsonan.g); // hindari "gh" Arab
+
+      return input;
     }
+
+    // Tes sederhana
+    console.log(convertToPegon("menggunakan ingin ialah untuk sambung sholat nabi ngaji nyanyi di kantor"));
   </script>
 </body>
 </html>
-
