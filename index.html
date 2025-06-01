@@ -3,7 +3,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Pegon Converter - Custom</title>
+  <title>Pegon Converter - Final</title>
 </head>
 <body>
   <h1>Converter Pegon Khusus</h1>
@@ -17,85 +17,74 @@
   <div id="pegonOutput" style="font-size: 24px; direction: rtl;"></div>
 
   <script>
-    const rules = {
-      vowels: {
-        a: "ا",
-        i: "ي",
-        u: "و",
-        e: "ىٓ",
-        o: "ؤ"
-      },
-      awalanVokal: {
-        i: "إي",
-        u: "أو",
-        a: "أ",
-        o: "أو",
-        e: "آ"
-      },
-      konsonan: {
-        ng: "ڠ",
-        ny: "پ",
-        g: "ڮ"
-      },
-      diftong: {
-        ai: "ائي",
-        au: "اؤ",
-        oi: "ؤي",
-        ui: "وي",
-        ei: "ئى"
-      },
-      arabLafadz: [
-        ["allah", "الله"],
-        ["muhammad", "محمد"],
-        ["islam", "اسلام"],
-        ["takbir", "تكبير"],
-        ["zakat", "زكاة"],
-        ["sholat", "صلاة"],
-        ["nabi", "نبي"],
-        ["dzikir", "ذكر"],
-        ["lafadz", "لفظ"],
-        ["taala", "تعالى"],
-        ["saw", "ﷺ"]
-      ],
-      special: {
-        ialah: "إيالاه",
-        "di ": "دي "
-      }
+    const pegonMap = {
+      ng: 'ڠ', ny: 'پ', sy: 'ش', kh: 'خ',
+      a: 'ا', i: 'ي', u: 'و', e: 'ىٓ', o: 'ؤ',
+      b: 'ب', c: 'چ', d: 'د', f: 'ف', g: 'ڮ', h: 'ه',
+      j: 'ج', k: 'ک', l: 'ل', m: 'م', n: 'ن',
+      p: 'ف', q: 'ق', r: 'ر', s: 'س', t: 'ت',
+      v: 'ف', w: 'و', x: 'خ', y: 'ي', z: 'ز'
     };
 
-    function convertToPegon(input) {
-      let result = input;
+    const awalanVokal = {
+      a: 'أ', i: 'إي', u: 'أو', o: 'أو', e: 'آ'
+    };
 
-      for (const key in rules.special) {
-        result = result.replaceAll(new RegExp("\b" + key, "gi"), rules.special[key]);
+    const arabOverride = {
+      allah: 'الله', muhammad: 'محمد', islam: 'اسلام',
+      takbir: 'تكبير', zakat: 'زكاة', sholat: 'صلاة',
+      nabi: 'نبي', dzikir: 'ذكر', lafadz: 'لفظ',
+      taala: 'تعالى', saw: 'ﷺ', ialah: 'إيالاه'
+    };
+
+    function convertToPegon(teks) {
+      let words = teks.split(/(\s+)/); // pisah spasi tetap
+      let hasil = '';
+
+      for (let kata of words) {
+        let lower = kata.toLowerCase();
+        if (arabOverride[lower]) {
+          hasil += arabOverride[lower];
+          continue;
+        }
+
+        if (lower.startsWith('di') && lower[2] && /[a-z]/.test(lower[2])) {
+          hasil += 'دي ' + convertWord(lower.slice(2));
+          continue;
+        }
+
+        hasil += convertWord(lower);
+      }
+      return hasil;
+    }
+
+    function convertWord(word) {
+      let hasil = '';
+      let i = 0;
+
+      // Cek vokal di awal kata
+      if (/^[aeiou]/.test(word)) {
+        hasil += awalanVokal[word[0]] || word[0];
+        i = 1;
       }
 
-      for (const [latin, arab] of rules.arabLafadz) {
-        result = result.replaceAll(new RegExp(latin, "gi"), arab);
+      while (i < word.length) {
+        let dua = word.slice(i, i+2).toLowerCase();
+        if (pegonMap[dua]) {
+          hasil += pegonMap[dua];
+          i += 2;
+          continue;
+        }
+        let satu = word[i].toLowerCase();
+        hasil += pegonMap[satu] || word[i];
+        i++;
       }
-
-      for (const d in rules.diftong) {
-        result = result.replaceAll(new RegExp(d, "gi"), rules.diftong[d]);
-      }
-
-      result = result.replace(/\b[aeiou]/gi, match => rules.awalanVokal[match.toLowerCase()] || match);
-
-      result = result.replace(/ng/g, rules.konsonan.ng);
-      result = result.replace(/ny/g, rules.konsonan.ny);
-      result = result.replace(/g(?!h)/g, rules.konsonan.g);
-
-      result = result.replace(/a/g, rules.vowels.a);
-      result = result.replace(/i/g, rules.vowels.i);
-      result = result.replace(/u/g, rules.vowels.u);
-      result = result.replace(/e/g, rules.vowels.e);
-      result = result.replace(/o/g, rules.vowels.o);
-
-      return result;
+      return hasil;
     }
 
     function convert() {
-      const input = document.getElementById("latinInput").value;
-      const output = convertToPegon(input);
+      let input = document.getElementById("latinInput").value;
+      let output = convertToPegon(input);
       document.getElementById("pegonOutput").innerText = output;
     }
   </script>
