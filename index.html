@@ -9,14 +9,21 @@
   <h1>Converter Pegon Khusus</h1>
   <p>Versi berdasarkan kaidah pribadi (user).</p>
 
+  <textarea id="latinInput" rows="4" cols="50" placeholder="Tulis teks Latin di sini..."></textarea>
+  <br>
+  <button onclick="convert()">Konversi ke Pegon</button>
+
+  <h2>Hasil Pegon:</h2>
+  <div id="pegonOutput" style="font-size: 24px; direction: rtl;"></div>
+
   <script>
     const rules = {
       vowels: {
         a: "ا",
         i: "ي",
         u: "و",
-        e: "ىٓ",  // tapi biasanya diganti dengan huruf keriting (non-standard Unicode)
-        o: "ؤ" // atau "أو" tergantung posisi
+        e: "ىٓ",
+        o: "ؤ"
       },
       awalanVokal: {
         i: "إي",
@@ -28,8 +35,7 @@
       konsonan: {
         ng: "ڠ",
         ny: "پ",
-        g: "ڮ",
-        kriting: "ٓ"  // tanda konsonan ber-harakat "e"
+        g: "ڮ"
       },
       diftong: {
         ai: "ائي",
@@ -39,15 +45,17 @@
         ei: "ئى"
       },
       arabLafadz: [
-        ["Allah", "الله"],
-        ["Muhammad", "محمد"],
-        ["Islam", "اسلام"],
+        ["allah", "الله"],
+        ["muhammad", "محمد"],
+        ["islam", "اسلام"],
         ["takbir", "تكبير"],
         ["zakat", "زكاة"],
         ["sholat", "صلاة"],
         ["nabi", "نبي"],
         ["dzikir", "ذكر"],
-        ["lafadz", "لفظ"]
+        ["lafadz", "لفظ"],
+        ["taala", "تعالى"],
+        ["saw", "ﷺ"]
       ],
       special: {
         ialah: "إيالاه",
@@ -56,34 +64,40 @@
     };
 
     function convertToPegon(input) {
-      // Terapkan konversi khusus "di "
+      let result = input;
+
       for (const key in rules.special) {
-        input = input.replaceAll(new RegExp("\b" + key, "gi"), rules.special[key]);
+        result = result.replaceAll(new RegExp("\b" + key, "gi"), rules.special[key]);
       }
 
-      // Terapkan lafadz Arab langsung
       for (const [latin, arab] of rules.arabLafadz) {
-        input = input.replaceAll(new RegExp(latin, "gi"), arab);
+        result = result.replaceAll(new RegExp(latin, "gi"), arab);
       }
 
-      // Tambahkan aturan diftong
-      for (const diftong in rules.diftong) {
-        input = input.replaceAll(new RegExp(diftong, "gi"), rules.diftong[diftong]);
+      for (const d in rules.diftong) {
+        result = result.replaceAll(new RegExp(d, "gi"), rules.diftong[d]);
       }
 
-      // Terapkan aturan awalan vokal
-      input = input.replace(/[aeiou]/gi, match => rules.awalanVokal[match.toLowerCase()] || match);
+      result = result.replace(/\b[aeiou]/gi, match => rules.awalanVokal[match.toLowerCase()] || match);
 
-      // Gantikan "ng", "ny", dan "g"
-      input = input.replace(/ng/gi, rules.konsonan.ng);
-      input = input.replace(/ny/gi, rules.konsonan.ny);
-      input = input.replace(/g(?!h)/gi, rules.konsonan.g); // hindari "gh" Arab
+      result = result.replace(/ng/g, rules.konsonan.ng);
+      result = result.replace(/ny/g, rules.konsonan.ny);
+      result = result.replace(/g(?!h)/g, rules.konsonan.g);
 
-      return input;
+      result = result.replace(/a/g, rules.vowels.a);
+      result = result.replace(/i/g, rules.vowels.i);
+      result = result.replace(/u/g, rules.vowels.u);
+      result = result.replace(/e/g, rules.vowels.e);
+      result = result.replace(/o/g, rules.vowels.o);
+
+      return result;
     }
 
-    // Tes sederhana
-    console.log(convertToPegon("menggunakan ingin ialah untuk sambung sholat nabi ngaji nyanyi di kantor"));
+    function convert() {
+      const input = document.getElementById("latinInput").value;
+      const output = convertToPegon(input);
+      document.getElementById("pegonOutput").innerText = output;
+    }
   </script>
 </body>
 </html>
