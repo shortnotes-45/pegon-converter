@@ -3,18 +3,36 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Pegon Converter - Final</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pegon Al-Kholiqy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
-<body>
-  <h1>Converter Pegon Al-Kholiqy</h1>
-  <p>Versi berdasarkan kaidah pribadi (user).</p>
+<body class="bg-gradient-to-b from-green-200 to-white min-h-screen flex flex-col items-center justify-center px-4">
 
-  <textarea id="latinInput" rows="8" cols="50" placeholder="Monggo Tulis teks Latin teng mriki..."></textarea>
-  <br>
-  <button onclick="convert()">Konversi ke Pegon</button>
+  <header class="text-center mb-8">
+    <h1 class="text-4xl md:text-5xl font-bold text-green-800">Pegon Al-Kholiqy</h1>
+    <p class="text-gray-700 mt-2">Versi berdasarkan kaidah pribadi (user)</p>
+  </header>
 
-  <h2>Hasil Pegon:</h2>
-  <div id="pegonOutput" style="font-size: 30px; direction: rtl;"></div>
+  <main class="bg-white p-6 md:p-10 rounded-xl shadow-lg w-full max-w-3xl">
+    <label for="latinInput" class="block text-lg font-semibold text-gray-700 mb-2">Teks Latin</label>
+    <textarea id="latinInput" rows="6" placeholder="Tulis teks Latin di sini..."
+      class="w-full p-4 border border-gray-300 rounded-lg mb-4 resize-none focus:outline-none focus:ring-2 focus:ring-green-400"></textarea>
+
+    <button onclick="convert()"
+      class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition mb-6">
+      Konversi ke Pegon
+    </button>
+
+    <h2 class="text-xl font-bold text-gray-800 mb-2">Hasil Pegon</h2>
+    <div id="pegonOutput" class="bg-gray-50 p-4 border border-gray-300 rounded-lg text-2xl text-right leading-loose"></div>
+  </main>
 
   <script>
     const pegonMap = {
