@@ -1,26 +1,27 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Pegon Converter Al-Kholiqy</title>
+  <title>Pegon Converter - Final</title>
 </head>
 <body>
-  <h1>Converter Pegon Al-Kholiqy</h1>
+  <h1>Converter Pegon Khusus</h1>
   <p>Versi berdasarkan kaidah pribadi (user).</p>
 
-  <textarea id="latinInput" rows="8" cols="70" placeholder="Monggo Tulis teks Latin di sini..."></textarea>
+  <textarea id="latinInput" rows="4" cols="50" placeholder="Tulis teks Latin di sini..."></textarea>
   <br>
   <button onclick="convert()">Konversi ke Pegon</button>
 
   <h2>Hasil Pegon:</h2>
-  <div id="pegonOutput" style="font-size: 40px; direction: rtl;"></div>
+  <div id="pegonOutput" style="font-size: 24px; direction: rtl;"></div>
 
   <script>
     const pegonMap = {
       ng: 'ڠ', ny: 'پ', sy: 'ش', kh: 'خ',
-      a: 'ا', i: 'ي', u: 'و', e: 'ٓ', o: 'و',
+      a: 'ا', i: 'ي', u: 'و', e: 'ىٓ', o: 'ؤ',
       b: 'ب', c: 'چ', d: 'د', f: 'ف', g: 'ڮ', h: 'ه',
-      j: 'ج', k: 'ك', l: 'ل', m: 'م', n: 'ن',
+      j: 'ج', k: 'ک', l: 'ل', m: 'م', n: 'ن',
       p: 'ف', q: 'ق', r: 'ر', s: 'س', t: 'ت',
       v: 'ف', w: 'و', x: 'خ', y: 'ي', z: 'ز'
     };
@@ -37,10 +38,7 @@
     const arabOverride = {
       allah: 'الله',
       muhammad: 'محمد',
-      mereka: 'مٓريكا'
       islam: 'إسلام',
-      hijrah: 'هجراه'
-      kaum: 'قوم'
       iman: 'إيمان',
       ihsan: 'إحسان',
       amal: 'عمل',
@@ -50,7 +48,7 @@
       zakat: 'زكاة',
       haji: 'حج',
       umrah: 'عمرة',
-      doa: 'دوعاء',
+      doa: 'دعاء',
       takdir: 'تقدير',
       syariat: 'شريعة',
       fiqih: 'فقه',
@@ -58,9 +56,11 @@
       hadis: 'حديث',
       nabi: 'نبي',
       rasul: 'رسول',
-      wahyu: 'واحيو',
+      wahyu: 'وحي',
       malaikat: 'ملائكة',
       jin: 'جن',
+      surga: 'جنة',
+      neraka: 'نار',
       tauhid: 'توحيد',
       kafir: 'كافر',
       munafik: 'منافق',
@@ -94,6 +94,7 @@
       ilmu: 'علم',
       akal: 'عقل',
       fikir: 'فكر',
+      pelajar: 'طالب',
       madrasah: 'مدرسة',
       ustaz: 'أستاذ',
       kitab: 'كتاب',
@@ -122,6 +123,7 @@
       rizki: 'رزق',
       muamalah: 'معاملة',
       akad: 'عقد',
+      utang: 'دين',
       dunia: 'دنيا',
       akhirat: 'آخرة',
       alam: 'عالم',
@@ -130,8 +132,10 @@
       sabar: 'صبر',
       ikhlas: 'إخلاص',
       niat: 'نية',
+      cinta: 'حب',
+      dosa: 'ذنب',
       pahala: 'ثواب',
-      adab: 'أداب',
+      adab: 'أدب',
       nafs: 'نفس',
       ruh: 'روح',
       qalb: 'قلب',
