@@ -183,6 +183,13 @@
       for (let kata of words) {
         let lower = kata.toLowerCase();
 
+        // Cek kata ulang (misalnya: amal-amal)
+        const ulang = /^(\w+)-(\1)$/.exec(lower);
+        if (ulang && arabOverride[ulang[1]]) {
+          hasil += arabOverride[ulang[1]] + '-' + arabOverride[ulang[1]];
+          continue;
+        }
+
         if (arabOverride[lower]) {
           hasil += arabOverride[lower];
           continue;
