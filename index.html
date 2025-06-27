@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -28,6 +27,7 @@
     <button onclick="convert()"
       class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition mb-6">
       Konversi ke Pegon
+      <span class="block text-sm opacity-60">Ctrl + Enter</span>
     </button>
 
     <h2 class="text-xl font-bold text-gray-800 mb-2">Hasil Pegon</h2>
@@ -79,7 +79,7 @@
       sampai: 'سامفائي',
       zakat: 'زكاة',
       haji: 'حج',
-      mereka: 'مٓريكا', umrah: 'عمرة',
+      umrah: 'عمرة',
       doa: 'دعاء',
       takdir: 'تقدير',
       syariat: 'شريعة',
@@ -88,7 +88,6 @@
       ulama: 'علماء',
       hadis: 'حديث',
       nabi: 'نبي',
-      rasul: 'رسول',
       wahyu: 'وحي',
       malaikat: 'ملائكة',
       jin: 'جن',
@@ -178,7 +177,7 @@
     };
 
     function convertToPegon(teks) {
-      let words = teks.split(/(\s+)/); // termasuk spasi
+      let words = teks.split(/(\s+)/);
       let hasil = '';
 
       for (let kata of words) {
@@ -235,6 +234,12 @@
       let output = convertToPegon(input);
       document.getElementById("pegonOutput").innerText = output;
     }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.ctrlKey && event.key === "Enter") {
+        convert();
+      }
+    });
   </script>
 </body>
 </html>
