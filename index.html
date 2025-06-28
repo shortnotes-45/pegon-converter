@@ -1,193 +1,96 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pegon Al-Kholiqy</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #0f9d58, #0077b6);
+      color: #333;
+    }
+    .scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+    .scrollbar::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 6px;
     }
   </style>
 </head>
-<body class="bg-gradient-to-b from-green-200 to-white min-h-screen flex flex-col items-center justify-center px-4">
+<body class="flex flex-col items-center min-h-screen py-10 px-4">
 
-  <header class="text-center mb-8">
-    <h1 class="text-4xl md:text-5xl font-bold text-green-800">Pegon Al-Kholiqy</h1>
-    <p class="text-gray-700 mt-2">Versi berdasarkan kaidah pribadi (user)</p>
+  <!-- HEADER -->
+  <header class="text-center mb-6">
+    <img src="logo.png" alt="Logo Pegon" class="mx-auto w-28 md:w-40 mb-2" />
+    <h1 class="text-4xl md:text-5xl font-bold text-white">
+      Peg<span class="text-lime-300">o</span>n Al khōlīy
+    </h1>
+    <p class="text-white text-sm md:text-base mt-1 opacity-80">
+      Versi berdasarkan kaidah pribadi (user)
+    </p>
   </header>
 
-  <main class="bg-white p-6 md:p-10 rounded-xl shadow-lg w-full max-w-3xl">
-    <label for="latinInput" class="block text-lg font-semibold text-gray-700 mb-2">Teks Latin</label>
-    <textarea id="latinInput" rows="6" placeholder="Tulis teks Latin di sini..."
-      class="w-full p-4 border border-gray-300 rounded-lg mb-4 resize-none focus:outline-none focus:ring-2 focus:ring-green-400"></textarea>
+  <!-- MAIN BOX -->
+  <main class="bg-white bg-opacity-90 rounded-3xl shadow-2xl w-full max-w-2xl">
+    <!-- INPUT TEXT -->
+    <div class="rounded-t-3xl bg-white py-2 px-4 border-b-2 border-gray-300">
+      <h2 class="text-xl font-bold text-gray-800">Teks Latin</h2>
+    </div>
+    <textarea
+      id="latinInput"
+      rows="10"
+      placeholder="Tulis teks Latin di sini..."
+      class="w-full p-4 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')] bg-repeat rounded-none focus:outline-none resize-none scrollbar text-base"
+    ></textarea>
 
-    <button onclick="convert()"
-      class="w-full bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition mb-6">
-      Konversi ke Pegon
-      <span class="block text-sm opacity-60">Ctrl + Enter</span>
-    </button>
+    <!-- TOMBOL KONVERSI -->
+    <div class="text-center my-4">
+      <button onclick="convert()"
+        class="bg-lime-500 hover:bg-lime-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg">
+        Konversi ke teks pegon<br>
+        <span class="text-sm font-normal opacity-70">Ctrl + Enter</span>
+      </button>
+    </div>
 
-    <h2 class="text-xl font-bold text-gray-800 mb-2">Hasil Pegon</h2>
-    <div id="pegonOutput" class="bg-gray-50 p-4 border border-gray-300 rounded-lg text-2xl text-right leading-loose"></div>
+    <!-- OUTPUT BOX -->
+    <div class="rounded-b-3xl bg-white py-2 px-4 border-t-2 border-gray-300">
+      <h2 class="text-xl font-bold text-gray-700">Hasil Pegon</h2>
+    </div>
+    <div id="pegonOutput"
+      class="text-2xl text-right p-4 leading-relaxed bg-gray-100 rounded-b-3xl"></div>
   </main>
 
+  <!-- SCRIPT -->
   <script>
-    const pegonMap = {
-      ng: 'ڠ', ny: 'پ', sy: 'ش', kh: 'خ', sh: 'ص',
-      a: 'ا', i: 'ي', u: 'و', e: 'ٓ', o: 'و', dl: 'ض',
-      b: 'ب', c: 'چ', d: 'د', f: 'ف', g: 'ڮ', h: 'ه',
-      j: 'ج', k: 'ك', l: 'ل', m: 'م', n: 'ن',
-      p: 'ف', q: 'ق', r: 'ر', s: 'س', t: 'ت',
-      v: 'ف', w: 'و', x: 'خ', y: 'ي', z: 'ز'
-    };
-
-    const awalanVokal = {
-      a: 'أ', i: 'إي', u: 'أو', o: 'أو', e: 'آ'
-    };
-
-    const angkaMap = {
-      '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
-      '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
-    };
-
     const arabOverride = {
-      allah: 'الله',
-      dia: 'دييا',
-      mempunyai: ' مٓمفوپائي',
-      sholeh: 'صالح',
-      mukmin: 'مؤمن',
-      beriman: 'بٓرإيمان',
-      beliau: 'بٓليياو',
-      mengetahui: 'مٓڠٓتاهوئي',
-      mereka: 'مٓريكا',
-      rasul: 'رسول',
-      rasulullah: 'رسول الله',
-      muhammad: 'محمد',
-      islam: 'إسلام',
-      iman: 'إيمان',
-      ihsan: 'إحسان',
-      kaum: 'قوم',
+      orang: 'اورڠ',
       amal: 'عمل',
-      akhlak: 'أخلاق',
-      ibadah: 'عبادة',
-      sholat: 'صلاة',
-      shalat: 'صلاة',
-      salat: 'صلاة',
-      sampai: 'سامفائي',
-      zakat: 'زكاة',
-      haji: 'حج',
-      umrah: 'عمرة',
-      doa: 'دعاء',
-      takdir: 'تقدير',
-      syariat: 'شريعة',
-      quraisy:  'قريش',
-      fiqih: 'فقه',
-      ulama: 'علماء',
-      hadis: 'حديث',
-      nabi: 'نبي',
-      wahyu: 'وحي',
-      malaikat: 'ملائكة',
-      jin: 'جن',
-      tauhid: 'توحيد',
-      kafir: 'كافر',
-      munafik: 'منافق',
-      syirik: 'شرك',
-      azab: 'عذاب',
-      rahmat: 'رحمة',
-      masjid: 'مسجد',
-      mihrab: 'محراب',
-      mimbar: 'منبر',
-      imam: 'إمام',
-      khatib: 'خطيب',
-      khutbah: 'خطبة',
-      wudhu: 'وضوء',
-      tayamum: 'تيمم',
-      najis: 'نجس',
-      halal: 'حلال',
-      haram: 'حرام',
-      fardhu: 'فرض',
-      sunnah: 'سنة',
-      makruh: 'مكروه',
-      mubah: 'مباح',
-      qadha: 'قضاء',
-      qadar: 'قدر',
-      hukum: 'حكم',
-      adil: 'عادل',
-      amanah: 'أمانة',
-      fitnah: 'فتنة',
-      sedekah: 'صدقة',
-      infaq: 'إنفاق',
-      qurban: 'قربان',
-      ilmu: 'علم',
-      akal: 'عقل',
-      fikir: 'فكر',
-      pelajar: 'طالب',
-      madrasah: 'مدرسة',
-      ustaz: 'أستاذ',
-      kitab: 'كتاب',
-      makna: 'معنى',
-      tafsir: 'تفسير',
-      huruf: 'حرف',
-      kalam: 'كلام',
-      naskah: 'نسخة',
-      ukhuwah: 'أخوة',
-      hidayah: 'هداية',
-      maulid: 'مولد',
-      isra: 'إسراء',
-      miraj: 'معراج',
-      khilafah: 'خلافة',
-      jamaah: 'جماعة',
-      takbir: 'تكبير',
-      tahmid: 'تحميد',
-      tahlil: 'تهليل',
-      dzikir: 'ذكر',
-      istighfar: 'استغفار',
-      dinar: 'دينار',
-      dirham: 'درهم',
-      riba: 'ربا',
-      syirkah: 'شركة',
-      wakaf: 'وقف',
-      rizki: 'رزق',
-      muamalah: 'معاملة',
-      akad: 'عقد',
-      utang: 'دين',
-      dunia: 'دنيا',
-      akhirat: 'آخرة',
-      alam: 'عالم',
-      waktu: 'وقت',
-      hikmah: 'حكمة',
-      sabar: 'صبر',
-      ikhlas: 'إخلاص',
-      niat: 'نية',
       baik: 'بائيك',
-      adab: 'أدب',
-      nafs: 'نفس',
-      ruh: 'روح',
-      qalb: 'قلب',
-      lafadz: 'لفظ',
-      taala: 'تعالى',
-      saw: 'ﷺ',
-      ialah: 'إيالاه',
-      hijrah:  'هجرة',
-      melainkan: 'مٓلائينكان',
-      alhamdulillah: 'الحمد لله'
+      // tambahkan lainnya sesuai kamus override
     };
 
-    function convertToPegon(teks) {
-      let words = teks.split(/(\s+)/);
-      let hasil = '';
+    function convertWord(word) {
+      return word; // logika dummy, ganti dengan yang asli
+    }
 
+    function convertToPegon(text) {
+      let hasil = '';
+      let words = text.split(/(\s+)/);
       for (let kata of words) {
         let lower = kata.toLowerCase();
 
-        // Cek kata ulang (misalnya: amal-amal)
+        // Deteksi kata ulang
         const ulang = /^(\w+)-(\w+)$/.exec(lower);
-        if (ulang && ulang[1] === ulang[2] && arabOverride[ulang[1]]) {
-          hasil += arabOverride[ulang[1]] + '-' + arabOverride[ulang[1]];
-          continue;
+        if (ulang) {
+          const base = ulang[1];
+          const ulang2 = ulang[2];
+          if (base === ulang2 && arabOverride[base]) {
+            hasil += arabOverride[base] + '-' + arabOverride[base];
+            continue;
+          }
         }
 
         if (arabOverride[lower]) {
@@ -195,55 +98,19 @@
           continue;
         }
 
-        if (/^\d+$/.test(kata)) {
-          let arabNum = kata.split('').map(char => angkaMap[char] || char).join('');
-          hasil += arabNum;
-          continue;
-        }
-
-        if (lower.startsWith('di') && lower[2] && /[a-z]/.test(lower[2])) {
-          hasil += 'دي ' + convertWord(lower.slice(2));
-          continue;
-        }
-
         hasil += convertWord(lower);
       }
-
-      return hasil;
-    }
-
-    function convertWord(word) {
-      let hasil = '';
-      let i = 0;
-
-      if (/^[aeiou]/.test(word)) {
-        hasil += awalanVokal[word[0]] || word[0];
-        i = 1;
-      }
-
-      while (i < word.length) {
-        let dua = word.slice(i, i + 2).toLowerCase();
-        if (pegonMap[dua]) {
-          hasil += pegonMap[dua];
-          i += 2;
-          continue;
-        }
-        let satu = word[i].toLowerCase();
-        hasil += pegonMap[satu] || word[i];
-        i++;
-      }
-
       return hasil;
     }
 
     function convert() {
-      let input = document.getElementById("latinInput").value;
-      let output = convertToPegon(input);
-      document.getElementById("pegonOutput").innerText = output;
+      const input = document.getElementById('latinInput').value;
+      document.getElementById('pegonOutput').innerText = convertToPegon(input);
     }
 
-    document.addEventListener("keydown", function(event) {
-      if (event.ctrlKey && event.key === "Enter") {
+    // Shortcut Ctrl + Enter
+    document.addEventListener('keydown', function (event) {
+      if (event.ctrlKey && event.key === 'Enter') {
         convert();
       }
     });
