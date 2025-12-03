@@ -111,7 +111,6 @@
       for (let kata of words) {
         let lower = kata.toLowerCase();
 
-        // Cek kata ulang (misalnya: amal-amal)
         const ulang = /^(\w+)-(\w+)$/.exec(lower);
         if (ulang && ulang[1] === ulang[2] && arabOverride[ulang[1]]) {
           hasil += arabOverride[ulang[1]] + '-' + arabOverride[ulang[1]];
@@ -141,6 +140,14 @@
     }
 
     function convertWord(word) {
+
+      // --- ATURAN KHUSUS: AKHIRAN "AI" → "ائي" ---
+      if (word.endsWith("ai")) {
+        let dasar = word.slice(0, -2);
+        return convertWord(dasar) + "ائي";
+      }
+      // -------------------------------------------
+
       let hasil = '';
       let i = 0;
 
@@ -176,5 +183,6 @@
       }
     });
   </script>
+
 </body>
 </html>
