@@ -51,10 +51,574 @@ const awalanVokal = {
 const angkaMap = { '0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩' };
 
 const arabOverride = {
-  "allah":"الله",
-  "sedekah":"صدقة","shodaqoh":"صدقة","sodaqah":"صدقة",
-  "syafaat":"شفاعة","syafaatnya":"شفاعاتپا",
-  "wudhu":"وضوء","shalat":"صلاة","zakat":"زكاة","iman":"إيمان","islam":"إسلام"
+  // ======================
+  // A
+  // ======================
+  "abdullah": "عبدالله",
+  "adab": "أدب",
+  "adil": "عادل",
+  "adiluhung": "عَديلُهُڠ",
+  "adzab": "عذاب",
+  "adzim": "عظيم",
+  "afdol": "أفضل",
+  "afiat": "عافية",
+  "afwan": "عفوا",
+  "ahsan": "أحسن",
+  "ahli": "أهل",
+  "akhbar": "أخبار",
+  "akhiran": "أخيرا",
+  "akhwat": "أخوات",
+  "akhirat": "آخرة",
+  "akhlak": "أخلاق",
+  "akidah": "عقيدة",
+  "akidahnya": "عقيدتپا",
+  "akikah": "عقيقة",
+  "akal": "عقل",
+  "akad": "عقد",
+  "alam": "عالم",
+  "alhamdulillah": "الحمد لله",
+  "allah": "الله",
+  "amanah": "أمانة",
+  "amal": "عمل",
+  "amalannya": "عملنپا",
+  "amin": "آمين",
+  "aminah": "أمينة",
+  "amr": "أمر",
+  "anfal": "أنفال",
+  "anfa'": "أنفع",
+  "arafah": "عرفة",
+  "arif": "عارف",
+  "arwah": "أرواح",
+  "arab": "عراب",
+
+  // ======================
+  // B
+  // ======================
+  "bait": "بيت",
+  "baitullah": "بيت الله",
+  "baik": "بائيك",
+  "baligh": "بالغ",
+  "barokah": "بركة",
+  "barzakh": "برزخ",
+  "bashirah": "بصيرة",
+  "batil": "باطل",
+  "bawaan": "بواءن",
+  "beliau": "بٓلياو",
+  "berakhlak": "بٓرأخلاق",
+  "berdoa": "بٓردعاء",
+  "bergaul": "بٓرڮاؤل",
+  "berharakat": "بٓرحركة",
+  "berhikmah": "بٓرحكمة",
+  "berhijrah": "بٓرهجرة",
+  "berijtihad": "بٓرإجتهاد",
+  "beristighfar": "بٓرإستغفار",
+  "beriman": "بٓرإيمان",
+  "berjamaah": "بٓرجماعة",
+  "berjuang": "بٓرجوڠ",
+  "bermakna": "بٓرمعنى",
+  "bermanfaat": "بٓرمنفعة",
+  "bermaulid": "بٓرمولد",
+  "bermazhab": "بٓرمذهب",
+  "berpuasa": "بٓرفواسا",
+  "berqurban": "بٓرقربان",
+  "bersujud": "بٓرسجود",
+  "bertafakur": "بٓرتفكر",
+  "bertauhid": "بٓرتوحيد",
+  "bertawakal": "بٓرتوكل",
+  "bin": "بن",
+  "bismillah": "بسم الله",
+
+  // ======================
+  // C
+  // ======================
+  "cadar": "خمار",
+  "calon": "صالون",
+  "ceramah": "خطبة",
+  "cagak": "ساق",
+
+  // ======================
+  // D
+  // ======================
+  "da'i": "داعي",
+  "da'wah": "دعوة","dakwah": "دعوة",
+  "dalil": "دليل",
+  "dinar": "دينار",
+  "dirham": "درهم",
+  "diri": "ديري",
+  "dirinya": "ديريپا",
+  "dunia": "دنيا",
+  "darurat": "ضرورة",
+  "darussalam": "دار السلام",
+  "dermawan": "درمىوان",
+  "do'a": "دعاء",
+  "dua": "دووا",
+  "dzalim": "ظالم",
+  "dzikir": "ذكر",
+  "dzulhijjah": "ذو الحجة",
+  "dzulqaidah": "ذو القعدة",
+  "kedua": "كٓدووا",
+  "keduanya": "كٓدوواپا",
+
+  // ======================
+  // F
+  // ======================
+  "fadhil": "فضل",
+  "fadhilah": "فضيلة",
+  "fadhilat": "فضيلة",
+  "fadhol": "فضل",
+  "faqih": "فقيه",
+  "fardu": "فرض",
+  "faraidh": "فرائض",
+  "firaun": "فرعون",
+  "fikir": "فكر",
+  "fitnah": "فتنة",
+  "fitrah": "فطرة",
+
+  // ======================
+  // G
+  // ======================
+  "gaul": "ڮاؤل",
+  "ghaflah": "غفلة",
+  "ghafur": "غفور",
+  "gharar": "غرر",
+  "ghaib": "غيب",
+  "ghaibnya": "غيبتپا",
+
+  // ======================
+  // H
+  // ======================
+  "habib": "حبيب",
+  "hafal": "حفظ",
+  "hafidz": "حافظ",
+  "haji": "حج",
+  "hak": "حق",
+  "hakikat": "حقيقة",
+  "hakim": "حكيم",
+  "halal": "حلال",
+  "halim": "حليم",
+  "hamzah": "همزة",
+  "haram": "حرم",
+  "harakat": "حركة",
+  "harakatnya": "حركاتپا",
+  "hidayah": "هداية",
+  "hijrah": "هجرة",
+  "hikmah": "حكمة",
+  "hilal": "هلال",
+  "hurairah": "هريرة",
+  "huruf": "حرف",
+  "hukum": "حكم",
+  "hasanah": "حسنة",
+  "hasanat": "حسنات",
+  "hasud": "حسد",
+  "hayat": "حياة",
+
+  // ======================
+  // I
+  // ======================
+  "ialah": "إيالاه",
+  "ibadah": "عبادة",
+  "iblis": "إبليس",
+  "idarah": "إدارة",
+  "iftar": "إفطار",
+  "ihsan": "إحسان",
+  "ihram": "إحرام",
+  "ijtihad": "اجتهاد",
+  "ikhlas": "إخلاص",
+  "ikhtiar": "اختيار",
+  "ikhtilaf": "اختلاف",
+  "ikhwan": "إخوان",
+  "ilahi": "إلهي",
+  "ilah": "إله",
+  "ilmu": "علم",
+  "imam": "إمام",
+  "iman": "إيمان",
+  "infaq": "إنفاق",
+  "insaf": "إنصاف",
+  "insan": "إنسان",
+  "insya": "إن شاء",
+  "iqra": "اقرأ",
+  "irsyad": "إرشاد",
+  "islam": "إسلام",
+  "isra": "إسراء",
+  "istighfar": "استغفار",
+  "istiqlal": "استقلال",
+
+  // ======================
+  // J
+  // ======================
+  "jahannam": "جهنم",
+  "jahil": "جاهل",
+  "jahiliyah": "جاهلية",
+  "jamaah": "جماعة",
+  "jannah": "جنة",
+  "jarh": "جرح",
+  "jazirah": "جزيرة",
+  "jin": "جن",
+  "jumat": "جمعة",
+  "juz": "جزء",
+
+  // ======================
+  // K
+  // ======================
+  "kafir": "كافر",
+  "kalam": "كلام",
+  "karamah": "كرامة",
+  "karim": "كريم",
+  "kaum": "قوم",
+  "khalifah": "خليفة",
+  "khalid": "خالِد",
+  "khatib": "خطيب",
+  "khilafah": "خلافة",
+  "khutbah": "خطبة",
+  "kiamat": "قيامة",
+  "kitab": "كتاب",
+  "khaibar": "خيبر",
+  "khoir": "خير",
+  "khoirunnas": "خير الناس",
+  "lafadz": "لفظ",
+  "lain": "لائين",
+  "lainnya": "لائينپا",
+
+  // ======================
+  // L
+  // ======================
+  "lahiriah": "ظاهرية",
+  "lailah": "ليلة",
+  "lailatul": "ليلة ال",
+  "lisan": "لسان",
+
+  // ======================
+  // M
+  // ======================
+  "madinah": "مدينة",
+  "madrasah": "مدرسة",
+  "mahasiswa": "طالب",
+  "mahasiswi": "طالبة",
+  "mahabbah": "محبة",
+  "mahfum": "مفهوم",
+  "mahluk": "مخلوق",
+  "makah": "مكة","makkah": "مكة","mekah": "مكة","mekkah": "مكة",
+  "makna": "معنى",
+  "makrifat": "معرفة",
+  "makruh": "مكروه",
+  "malaikat": "ملائكة",
+  "manfaat": "منفعة",
+  "maqam": "مقام",
+  "marah": "غضب",
+  "mensyaratkan": "مٓنشراطكان",
+  "mencintai": "مٓنچينتائي",
+  "mengetahui": "مٓڠٓتاهوئي",
+  "melainkan": "مٓلائينكان",
+  "melampaui": "مٓلامفاوئي",
+  "melampauinya": "مٓلامفوئيپا",
+  "mempunyai": "مٓمفوپائي",
+  "menikah": "مٓنيكاح",
+  "menikahi": "مٓنيكاحي",
+  "menggauli": "مٓڠڮاؤلي",
+  "mereka": "مٓريكا",
+  "maulid": "مولد",
+  "maulaya": "مولاي",
+  "mihrab": "محراب",
+  "mimbar": "منبر",
+  "miraj": "معراج",
+  "mubah": "مباح",
+  "muamalah": "معاملة",
+  "muhammad": "محمد",
+  "mukmin": "مؤمن",
+  "mu'min": "مؤمن",
+  "mu'minin": "مؤمنين",
+  "mukminin": "مؤمنين",
+  "muslim": "مسلم",
+  "muslimin": "مسلمين",
+  "musibah": "مصيبة",
+  "musyawarah": "مشاورة",
+  "mutawatir": "متواتر",
+  "mustahil": "مستحيل",
+  "mustajab": "مستجاب",
+  "mursal": "مرسل",
+  "muqaddimah": "مقدمة",
+
+  // ======================
+  // N
+  // ======================
+  "nabi": "نبي",
+  "najah": "نجاح",
+  "najis": "نجس",
+  "nafs": "نفس",
+  "naqis": "ناقص",
+  "naqli": "نقلي",
+  "nasab": "نسب",
+  "nasihat": "نصيحة",
+  "nasuha": "ناصحة",
+  "naudzubillah": "نعوذ بالله",
+  "nikah": "نكاح",
+  "nikmat": "نعمة",
+  "niat": "نية",
+  "naskah": "نسخة",
+
+  // ======================
+  // O
+  // ======================
+  "oleh": "أولٓيه",
+
+  // ======================
+  // P
+  // ======================
+  "pelajar": "طالب",
+  "pergaulan": "فٓرڮاؤلان",
+
+  // ======================
+  // Q
+  // ======================
+  "qadar": "قدر",
+  "qadha": "قضاء",
+  "qalb": "قلب",
+  "qiraah": "قراءة",
+  "qiroah": "قراءة",
+  "qurban": "قربان",
+  "quraisy": "قريش",
+  "qiyam": "قيام",
+  "qiyamul": "قيام ال",
+
+  // ======================
+  // R
+  // ======================
+  "rahmat": "رحمة",
+  "rahim": "رحيم",
+  "rakaat": "ركعة",
+  "ramadan": "رمضان",
+  "rasul": "رسول",
+  "rasulullah": "رسول الله",
+  "ridha": "ريضا",
+  "ridho": "ريضا",
+  "riba": "ربا",
+  "ridwan": "رضوان",
+  "rizki": "رزق",
+  "rizqi": "رزق",
+  "ruh": "روح",
+  "riya": "رياء",
+  "rukun": "ركن",
+
+  // ======================
+  // S
+  // ======================
+  "sabar": "صبر",
+  "sadiq": "صادق",
+  "sajadah": "سجادة",
+  "sakinah": "سكينة",
+  "salam": "سلام",
+  "salaf": "سلف",
+  "salafus": "سلف ال",
+  "salat": "صلاة",
+  "sampai": "سامفائي",
+  "saw": "ﷺ",
+  "sebagai": "سٓباڮائي",
+  "sedekah": "صدقة",
+  "seorang": "سٓؤراڠ",
+  "seseorang": "سٓسٓؤراڠ",
+  "selain": "سٓلائين",
+  "shalat": "صلاة",
+  "sholat": "صلاة",
+  "sholatlah": "صلاة",
+  "sholeh": "صالح",
+  "sifat": "صفة",
+  "syafaat": "شفاعة",
+  "syafaatnya": "شفاعاتپا",
+  "syams": "شمس",
+  "syamsul": "شمس ال",
+  "syariat": "شريعة",
+  "syarat": "شرط",
+  "syaratkan": "شراطكان",
+  "syekh": "شيخ",
+  "syirkah": "شركة",
+  "syirik": "شرك",
+  "syukur": "شكر",
+  "sujud": "سجود",
+  "sami": "سميع",
+  "sami'allah": "سمع الله",
+  "sawab": "ثواب",
+
+  // ======================
+  // T
+  // ======================
+  "taala": "تعالى",
+  "tadabbur": "تدبر",
+  "tafsir": "تفسير",
+  "taharah": "طهارة",
+  "tahlil": "تهليل",
+  "tahmid": "تحميد",
+  "takbir": "تكبير",
+  "takdir": "تقدير",
+  "tamtsil": "تمثيل",
+  "tasbih": "تسبيح",
+  "tasawuf": "تصوف",
+  "tasdik": "تصديق",
+  "taslim": "تسليم",
+  "taubat": "توبة",
+  "tauhid": "توحيد",
+  "tauqif": "توقيف",
+  "tayamum": "تيمم",
+  "tarawih": "تراويح",
+  "tarbiyah": "تربية",
+  "tartil": "ترتيل",
+  "tawaf": "طواف",
+  "thariqah": "طريقة",
+  "thawaf": "طواف",
+  "thaharah": "طهارة",
+
+  // ======================
+  // U
+  // ======================
+  "ukhuwah": "أخوة",
+  "ulama": "علماء",
+  "ulil": "أولي ال",
+  "umrah": "عمرة",
+  "ummat": "أمة",
+  "ummuh": "أم",
+  "ushalli": "أصلي",
+  "ustaz": "أستاذ",
+  "utang": "دين",
+  "utsman": "عثمان",
+  "usman": "عثمان",
+  "udzur": "عذر",
+  "ujub": "عجب",
+
+  // ======================
+  // W
+  // ======================
+  "wahyu": "وحي",
+  "wali": "ولي",
+  "waliyyullah": "ولي الله",
+  "wakaf": "وقف",
+  "waktu": "وقت",
+  "wirid": "ورد",
+  "wudhu": "وضوء",
+  "wala": "ولا",
+
+  // ======================
+  // Y
+  // ======================
+  "yaitu": "ياإيتو",
+  "yaqin": "يقين",
+  "yaum": "يوم",
+  "yaumul": "يوم ال",
+
+  // ======================
+  // Z
+  // ======================
+  "zaid": "زيد",
+  "zakat": "زكاة",
+  "zalim": "ظالم",
+  "zamzam": "زمزم",
+  "zuhur": "ظهر",
+  "zunub": "ذنوب",
+
+      // variasi kata sedekah / shodaqoh
+      "shodaqoh": "صدقة","shodaqah":"صدقة","sodaqoh":"صدقة","sodaqah":"صدقة","sadaqah":"صدقة","sedekah":"صدقة",
+      // tambahan contoh lain (bisa dikembangkan)
+      "syafaatnya":"شفاعاتپا","syafaat":"شفاعة","bersyafaat":"بٓرشفاعة",
+  /* ============================
+   DAFTAR ULAMA (A–Z)
+   ============================ */
+
+  "abuhanifah": "أبو حنيفة","abu hanifah": "أبو حنيفة",
+  "abdul qadir": "عبد القادر",
+  "ahmad bin hanbal": "أحمد بن حنبل",
+  "albaihaqi": "البيهقي",
+  "albarbahari": "الباربهاري",
+  "albusiri": "البوصيري",
+  "albukhari": "البخاري",
+  "albulqini": "البلقيني",
+  "albarzanji": "البرزنجي",
+  "albaydawi": "البيضاوي",
+  "albaghdadi": "البغدادي",
+  "alqurtubi": "القرطبي",
+  "alghazali": "الغزالي",
+  "alhakim": "الحاكم",
+  "alhallaj": "الحلاج",
+  "alhindi": "الهندي",
+  "alhujwiri": "الهجويري",
+  "alibnabithalib": "علي بن أبي طالب",
+  "alibnalmadini": "علي بن المديني",
+  "imam ghazali": "الإمام الغزالي",
+  "imam albukhari": "الإمام البخاري",
+  "imam muslim": "الإمام مسلم",
+
+  "darimi": "الدارمي",
+  "dzahabi": "الذهبي",
+
+  "ghazali": "الغزالي",
+
+  "hakim": "الحاكم",
+  "hibban": "ابن حبان",
+
+  "ibnabbas": "ابن عباس",
+  "ibnmasud": "ابن مسعود",
+  "ibnumajah": "ابن ماجه",
+  "ibnjarir": "ابن جرير",
+  "ibnatsir": "ابن الأثير",
+  "ibnaljauzi": "ابن الجوزي",
+  "ibntaimiyah": "ابن تيمية",
+  "ibnqayyim": "ابن القيم",
+  "ibnhajar": "ابن حجر",
+  "ibnmandzur": "ابن منظور",
+  "ibnsyihab": "ابن شهاب",
+  "ibnibnisa": "ابن عيسى",
+  "imamja'far": "الإمام جعفر",
+  "imamjafar": "الإمام جعفر",
+
+  "kaab": "كعب",
+  "khatib": "الخطيب",
+  "khalid": "خالد",
+  "kurtubi": "القرطبي",
+
+  "malik": "مالك",
+  "mawardi": "الماوردي",
+  "maturidi": "الماتريدي",
+  "muwatha": "موطأ",
+  "muhasibi": "المحاسبي",
+  "muzani": "المزني",
+  "mudhar": "مضر",
+  "mujahid": "مجاهد",
+  "makhul": "مكحول",
+  "muslim": "مسلم",
+
+  "nawawi": "النووي",
+  "nasai": "النسائي",
+  "nasa'i": "النسائي",
+  "nafi'": "نافع",
+
+  "qurtubi": "القرطبي",
+  "qadhiiyadh": "القاضي عياض",
+
+  "razi": "الرازي",
+  "ramli": "الرملي",
+  "rafii": "الرافعي",
+
+  "suyuthi": "السيوطي",
+  "subki": "السبكي",
+  "syafii": "الشافعي",
+  "syafi'i": "الشافعي",
+  "sufyan": "سفيان",
+  "syatibi": "الشاطبي",
+  "syinqithi": "الشنقيطي",
+  "syaukani": "الشوكاني",
+
+  "tabari": "الطبري",
+  "tirmidzi": "الترمذي",
+  "thabathaba'i": "الطباطبائي",
+
+  "wahidi": "الواحدي",
+  "waki'": "وكيع",
+
+  "yahya": "يحيى",
+  "yaqubi": "اليعقوبي",
+  "yafi'i": "اليافعي",
+
+  "zahabi": "الذهبي",
+  "zamakhsyari": "الزمخشري",
+  "zabidi": "الزبيدي",
+  "zuhri": "الزهري"
 };
 
 const akhiranMap = { nya:"پا", mu:"مو", ku:"كو", kah:"كاه", lah:"لاه", pun:"فون" };
