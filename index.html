@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pegon Al-Kholiqy</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pegon Al-Kholiqy — Final</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-  </style>
+  <style> body { font-family: 'Inter', sans-serif; } </style>
 </head>
 <body class="bg-gradient-to-b from-green-200 to-white min-h-screen flex flex-col items-center justify-center px-4">
 
   <header class="text-center mb-8">
     <h1 class="text-4xl md:text-5xl font-bold text-green-800">Pegon Al-Kholiqy</h1>
-    <p class="text-gray-700 mt-2">Versi berdasarkan kaidah pribadi (user)</p>
+    <p class="text-gray-700 mt-2">Versi dengan aturan ejaan Pegon kustom (AI, AU, IA, UI, EI, UA, ta-marbutah handling)</p>
   </header>
 
   <main class="bg-white p-6 md:p-10 rounded-xl shadow-lg w-full max-w-3xl">
@@ -35,13 +31,16 @@
   </main>
 
   <script>
+    // ---------------------------
+    // PETA DASAR KONVERSI HURUF
+    // ---------------------------
     const pegonMap = {
-      ng: 'ڠ', ny: 'پ', sy: 'ش', kh: 'خ', sh: 'ص',
+      ng: 'ڠ', ny: 'ڽ', sy: 'ش', kh: 'خ', sh: 'ش',
       a: 'ا', i: 'ي', u: 'و', e: 'ٓ', o: 'و', dl: 'ض',
       b: 'ب', c: 'چ', d: 'د', f: 'ف', g: 'ڮ', h: 'ه',
       j: 'ج', k: 'ك', l: 'ل', m: 'م', n: 'ن',
-      p: 'ف', q: 'ق', r: 'ر', s: 'س', t: 'ت',
-      v: 'ف', w: 'و', x: 'خ', y: 'ي', z: 'ز'
+      p: 'ڤ', q: 'ق', r: 'ر', s: 'س', t: 'ت',
+      v: 'ڤ', w: 'و', x: 'خ', y: 'ي', z: 'ز'
     };
 
     const awalanVokal = {
@@ -53,104 +52,261 @@
       '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
     };
 
+    // ---------------------------
+    // KAMUS OVERRIDE ARAB
+    // (versi awal — bisa dikembangkan lagi)
+    // ---------------------------
     const arabOverride = {
-      adzan: 'أذان', allah: 'الله', amal: 'عمل', akhlak: 'أخلاق', azab: 'عذاب', amanah: 'أمانة', akad: 'عقد', abdullah: 'عبدالله', akhirat: 'آخرة', akal: 'عقل', alhamdulillah: 'الحمد لله', adab: 'أدب', alam: 'عالم', adil: 'عادل', arab: 'عراب',
-      
-      beriman: 'بٓرإيمان', dia: 'دييا', beliau: 'بٓليياو', baik: 'بائيك', bergaul: 'بٓرڮاؤل', bin: 'بن', berharakat : 'بٓرحركة',
-      
-      doa: 'دعاء', dinar: 'دينار', dirham: 'درهم', dunia: 'دنيا', dzikir: 'ذكر', diri: 'ديري', dirinya: 'ديريپا', dua: 'دووا', kedua: 'كٓدووا', keduanya: 'كٓدوواپا',
-      
-      fikir: 'فكر', fitnah: 'فتنة', fiqih: 'فقه', fardhu: 'فرض', firaun: 'فرعون',
-      
-      gaul: 'ڮاؤل',
-      
-      haji: 'حج', hijrah:  'هجرة', halal: 'حلال', haram: 'حرام', hukum: 'حكم', hikmah: 'حكمة', huruf: 'حرف', hidayah: 'هداية', hadis: 'حديث', hak: 'حق', hurairah: 'هريرة', harakat: 'حركة', harakatnya :'حركاتپا',
-      
-      islam: 'إسلام', iman: 'إيمان', ihsan: 'إحسان', ibadah: 'عبادة', imam: 'إمام', ilmu: 'علم', infaq: 'إنفاق', istighfar: 'استغفار', isra: 'إسراء', ialah: 'إيالاه', ikhlas: 'إخلاص',
-      
-      jin: 'جن', jamaah: 'جماعة', jumat: 'جمعة',
-      
-      khatib: 'خطيب', khutbah: 'خطبة', kitab: 'كتاب', kalam: 'كلام', kafir: 'كافر', kaum: 'قوم', khilafah: 'خلافة', Khalid: 'خالِد', kiamat: 'قيامة',
-      
-      lafadz: 'لفظ', lain: 'لائين', lainnya: 'لائينپا',
-      
-      madrasah: 'مدرسة', mahluk: 'مخلوق', malaikat: 'ملائكة', manfaat: 'منفعة', makna: 'معنى',
-      mempunyai: 'مٓمفوپائي', mencintai: 'مٓنچينتائي', mengetahui: 'مٓڠٓتاهوئي', masjid: 'مسجد', melainkan: 'مٓلائينكان', melampaui: 'مٓلامفاوئي', melampauinya: 'مٓلامفاوئيپا', mereka: 'مٓريكا',
-      maulid: 'مولد', muamalah: 'معاملة', muhammad: 'محمد', mubah: 'مباح', makruh: 'مكروه', mukmin: 'مؤمن', muslim: 'مسلم', muslimin: 'مسلمين', munafik: 'منافق', 
-      mihrab: 'محراب', mimbar: 'منبر', miraj: 'معراج', menggauli: 'مٓڠڮاؤلي', madinah: 'مدينة',
-      
-      naskah: 'نسخة', nikmat: 'نعمة', nabi: 'نبي', najis: 'نجس', niat: 'نية', nafs: 'نفس', nikah: 'نكاح', menikah: 'مٓنيكاح', menikahi: 'مٓنيكاحي',
-      
-      oleh: 'أولٓيه',
-      
-      pelajar: 'طالب', pergaulan: 'فٓرڮاؤلان',
-      
-      qadar: 'قدر', qurban: 'قربان', qadha: 'قضاء', quraisy:  'قريش', qalb: 'قلب',
-      
-      rasul: 'رسول', rasulullah: 'رسول الله', rahmat: 'رحمة', rizki: 'رزق', riba: 'ربا', ruh: 'روح', ridha: 'ريضا', ridho: 'ريضا', rakaat: 'ركعة',
-      
-      salat: 'صلاة', salam: 'سلام', sabar: 'صبر', sebagai: 'سٓباڮائي', sedekah: 'صدقة', shalat: 'صلاة', sholeh: 'صالح', sholat: 'صلاة', selain: 'سٓلائين',
-      sampai: 'سامفائي', syariat: 'شريعة', syirik: 'شرك', syirkah: 'شركة', sunnah: 'سنة', saw: 'ﷺ', seorang: 'سٓؤراڠ', seseorang: 'سٓسٓؤراڠ', sifat: 'صفة',
-      syarat: 'شرط', mensyaratkan: 'مٓنشراطكان', syaratkan: 'شراطكان',
-      
-      taala: 'تعالى', tafsir: 'تفسير', tahlil: 'تهليل', tahmid: 'تحميد', takdir: 'تقدير', takbir: 'تكبير', tauhid: 'توحيد', tayamum: 'تيمم',
-      
-      ukhuwah: 'أخوة', ulama: 'علماء', umrah: 'عمرة', ustaz: 'أستاذ', utang: 'دين',
-      
-      wahyu: 'وحي', wakaf: 'وقف', waktu: 'وقت', wudhu: 'وضوء', utsman: 'عثمان', usman: 'عثمان',
-      
-      yaitu: 'ياإيتو',
-      
-      zakat: 'زكاة', zaid: 'زيد',
+      "adzan": "أذان","allah":"الله","amal":"عمل","akhlak":"أخلاق","azab":"عذاب","amanah":"أمانة",
+      "akad":"عقد","abdullah":"عبدالله","akhirat":"آخرة","akal":"عقل","alhamdulillah":"الحمد لله","adab":"أدب",
+      "alam":"عالم","adil":"عادل","arab":"عراب","beriman":"بٓرإيمان","dia":"دييا","beliau":"بٓليياو","baik":"بائيك",
+      "bergaul":"بٓرڮاؤل","bin":"بن","berharakat":"بٓرحركة","doa":"دعاء","dinar":"دينار","dirham":"درهم","dunia":"دنيا",
+      "dzikir":"ذكر","diri":"ديري","dirinya":"ديريپا","dua":"دووا","kedua":"كٓدووا","keduanya":"كٓدوواپا",
+      "fikir":"فكر","fitnah":"فتنة","fiqih":"فقه","fardhu":"فرض","firaun":"فرعون","gaul":"ڮاؤل",
+      "haji":"حج","hijrah":"هجرة","halal":"حلال","haram":"حرام","hukum":"حكم","hikmah":"حكمة","huruf":"حرف",
+      "hidayah":"هداية","hadis":"حديث","hak":"حق","hurairah":"هريرة","harakat":"حركة","harakatnya":"حركاتپا",
+      "islam":"إسلام","iman":"إيمان","ihsan":"إحسان","ibadah":"عبادة","imam":"إمام","ilmu":"علم","infaq":"إنفاق",
+      "istighfar":"استغفار","isra":"إسراء","ialah":"إيالاه","ikhlas":"إخلاص","jin":"جن","jamaah":"جماعة","jumat":"جمعة",
+      "khatib":"خطيب","khutbah":"خطبة","kitab":"كتاب","kalam":"كلام","kafir":"كافر","kaum":"قوم","khilafah":"خلافة",
+      "khalid":"خالِد","kiamat":"قيامة","lafadz":"لفظ","lain":"لائين","lainnya":"لائينپا","madrasah":"مدرسة",
+      "mahluk":"مخلوق","malaikat":"ملائكة","manfaat":"منفعة","makna":"معنى","mempunyai":"مٓمفوپائي",
+      "mencintai":"مٓنچينتائي","mengetahui":"مٓڠٓتاهوئي","masjid":"مسجد","melainkan":"مٓلائينكان","melampaui":"مٓلامفاوئي",
+      "melampauinya":"مٓلامفاوئيпа","mereka":"مٓريكا","maulid":"مولد","muamalah":"معاملة","muhammad":"محمد","mubah":"مباح",
+      "makruh":"مكروه","mukmin":"مؤمن","muslim":"مسلم","muslimin":"مسلمين","munafik":"منافق","mihrab":"محراب","mimbar":"منبر",
+      "miraj":"معراج","menggauli":"مٓڠڮاؤلي","madinah":"مدينة","naskah":"نسخة","nikmat":"نعمة","nabi":"نبي","najis":"نجس",
+      "niat":"نية","nafs":"نفس","nikah":"نكاح","menikah":"مٓنيكاح","menikahi":"مٓنيكاحي","oleh":"أولٓيه","pelajar":"طالب",
+      "pergaulan":"فٓرڮاؤلان","qadar":"قدر","qurban":"قربان","qadha":"قضاء","quraisy":"قريش","qalb":"قلب","rasul":"رسول",
+      "rasulullah":"رسول الله","rahmat":"رحمة","rizki":"رزق","rizqi":"رزق","riba":"ربا","ruh":"روح","ridha":"ريضا","ridho":"ريضا",
+      "rakaat":"ركعة","salat":"صلاة","salam":"سلام","sabar":"صبر","sebagai":"سٓباڮائي","sedekah":"صدقة","sholat":"صلاة",
+      "sholatlah":"صلاة","sholeh":"صالح","sholat":"صلاة","selain":"سٓلائين","sampai":"سامفائي","syariat":"شريعة","syirik":"شرك",
+      "syirkah":"شركة","sunnah":"سنة","saw":"ﷺ","seorang":"سٓؤراڠ","seseorang":"سٓسٓؤراڠ","sifat":"صفة","syarat":"شرط",
+      "mensyaratkan":"مٓنشراطكان","syaratkan":"شراطكان","taala":"تعالى","tafsir":"تفسير","tahlil":"تهليل","tahmid":"تحميد",
+      "takdir":"تقدير","takbir":"تكبير","tauhid":"توحيد","tayamum":"تيمم","ukhuwah":"أخوة","ulama":"علماء","umrah":"عمرة",
+      "ustaz":"أستاذ","utang":"دين","wahyu":"وحي","wakaf":"وقف","waktu":"وقت","wudhu":"وضوء","utsman":"عثمان","usman":"عثمان",
+      "yaitu":"ياإيتو","zakat":"زكاة","zaid":"زيد",
+      // variasi kata sedekah / shodaqoh
+      "shodaqoh": "صدقة","shodaqah":"صدقة","sodaqoh":"صدقة","sodaqah":"صدقة","sadaqah":"صدقة","sedekah":"صدقة",
+      // tambahan contoh lain (bisa dikembangkan)
+      "syafaatnya":"شفاعاتپا","syafaat":"شفاعة","bersyafaat":"بٓرشفاعة","rahn": "رهين"
     };
 
+    // ---------------------------
+    // ATURAN AKHIRAN (versi Anda)
+    // ---------------------------
+    const akhiranMap = {
+      "nya": "پا",
+      "mu": "مو",
+      "ku": "كو",
+      "kah": "كاه",
+      "lah": "لاه",
+      "pun": "فون"
+    };
+
+    // ---------------------------
+    // DAFTAR DIF-TONG / PENGECUALIAN
+    // (AI diftong yang tidak dipisah)
+    // ---------------------------
+    const diftongAI = [
+      "santai","lalai","ramai","lihai","nilai","pandai","lantai","rantai",
+      "santai","balai","selai","patai","serai","tempai","pantai",
+      // bentuk umum akhir dua huruf yg biasanya diftong
+      "lai","kai","sai","dai","gai","rai","pai","tai","hai","mai","nai"
+    ];
+
+    // DAFTAR diftong UI (umumnya satu suku) — jika tidak di daftar, UI dipisah jadi وئي
+    const diftongUI = [
+      "kui","kuih","duit","kuit"
+    ];
+
+    // ---------------------------
+    // UTILITY: bersihkan tanda baca (untuk pengecekan kata dasar)
+    // ---------------------------
+    function stripPunc(s) {
+      return s.replace(/^[\W_]+|[\W_]+$/g, '');
+    }
+
+    // ---------------------------
+    // KONVERSI UTAMA - per kalimat
+    // ---------------------------
     function convertToPegon(teks) {
-      let words = teks.split(/(\s+)/);
+      // pecah sambil mempertahankan spasi
+      let parts = teks.split(/(\s+)/);
       let hasil = '';
 
-      for (let kata of words) {
-        let lower = kata.toLowerCase();
+      for (let part of parts) {
+        // jika spasi, tetap tambahkan
+        if (/^\s+$/.test(part)) { hasil += part; continue; }
 
-        const ulang = /^(\w+)-(\w+)$/.exec(lower);
-        if (ulang && ulang[1] === ulang[2] && arabOverride[ulang[1]]) {
-          hasil += arabOverride[ulang[1]] + '-' + arabOverride[ulang[1]];
-          continue;
-        }
+        // ambil bentuk bersih untuk pengecekan kamus/suffix
+        let raw = stripPunc(part);
+        let lower = raw.toLowerCase();
 
+        // 1) cek override penuh (kata utuh)
         if (arabOverride[lower]) {
-          hasil += arabOverride[lower];
+          // langsung sisipkan versi arabnya (tetap pertahankan tanda baca)
+          hasil += wrapWithPunct(part, arabOverride[lower]);
           continue;
         }
 
-        if (/^\d+$/.test(kata)) {
-          let arabNum = kata.split('').map(char => angkaMap[char] || char).join('');
-          hasil += arabNum;
+        // 2) cek akhiran khusus untuk kata arab yang berakhir ة (ta marbutah)
+        let matchedSuffix = false;
+        for (let suf in akhiranMap) {
+          if (lower.endsWith(suf)) {
+            let dasar = lower.slice(0, -suf.length);
+            if (arabOverride[dasar] && arabOverride[dasar].endsWith("ة")) {
+              let arabDasar = arabOverride[dasar];
+              let arabTanwin = arabDasar.slice(0, -1) + "ت"; // ة -> ت
+              hasil += wrapWithPunct(part, arabTanwin + akhiranMap[suf]);
+              matchedSuffix = true;
+              break;
+            }
+          }
+        }
+        if (matchedSuffix) continue;
+
+        // 3) jika token hanya angka
+        if (/^\d+$/.test(raw)) {
+          let arabNum = raw.split('').map(ch => angkaMap[ch] || ch).join('');
+          hasil += wrapWithPunct(part, arabNum);
           continue;
         }
 
-        if (lower.startsWith('di') && lower[2] && /[a-z]/.test(lower[2])) {
-          hasil += 'دي ' + convertWord(lower.slice(2));
+        // 4) penanganan awalan "di" + kata kerja (opsional: sesuai pola sebelumnya)
+        if (lower.startsWith('di') && lower.length > 2 && /[a-z]/.test(lower[2])) {
+          let after = lower.slice(2);
+          let conv = convertWord(after);
+          hasil += wrapWithPunct(part, 'دي ' + conv);
           continue;
         }
 
-        hasil += convertWord(lower);
+        // 5) default: konversi per kata
+        hasil += wrapWithPunct(part, convertWord(lower));
       }
 
       return hasil;
     }
 
+    // bungkus hasil arab kembali dengan tanda baca awal/akhir yang ada di part
+    function wrapWithPunct(original, arabWord) {
+      // capture leading/trailing non-word
+      const lead = original.match(/^[\W_]+/) || [''];
+      const trail = original.match(/[\W_]+$/) || [''];
+      return lead[0] + arabWord + trail[0];
+    }
+
+    // ---------------------------
+    // KONVERSI PER KATA: aturan vokal ganda & huruf per huruf
+    // ---------------------------
     function convertWord(word) {
 
-      // --- ATURAN KHUSUS: AKHIRAN "AI" → "ائي" ---
+      // jika kosong
+      if (!word) return '';
+
+      // ---------- ATURAN AI (diftong vs dua suku) ----------
       if (word.endsWith("ai")) {
+        // jika kata masuk daftar diftong => gunakan ي
+        for (let dt of diftongAI) {
+          if (word.endsWith(dt)) {
+            let dasar = word.slice(0, -2);
+            return convertWord(dasar) + "ي";
+          }
+        }
+        // selain itu => pecah jadi ا + ي
         let dasar = word.slice(0, -2);
         return convertWord(dasar) + "ائي";
       }
-      // -------------------------------------------
+      // ---------- SELESAI AI ----------
 
+      // ---------- ATURAN AU (biasanya diftong -> او) ----------
+      if (word.includes("au")) {
+        // ganti setiap 'au' yang tampak sebagai diftong
+        // berhati-hati: lakukan replacement dari kiri ke kanan
+        let out = '';
+        let i = 0;
+        while (i < word.length) {
+          if (word.slice(i, i+2) === 'au') {
+            out += 'او';
+            i += 2;
+            continue;
+          }
+          // else proses per-huruf pada karakter tunggal
+          // kita akan menggunakan proses normal via pegonMap
+          let ch = word[i];
+          // handle digraph dua huruf jika ada
+          let dua = word.slice(i, i+2);
+          if (pegonMap[dua]) { out += pegonMap[dua]; i += 2; continue; }
+          out += pegonMap[ch] || ch;
+          i++;
+        }
+        return out;
+      }
+      // ---------- SELESAI AU ----------
+
+      // ---------- ATURAN UI ----------
+      if (word.endsWith("ui")) {
+        // kecuali jika kata ada di daftar diftongUI -> gunakan وي
+        for (let dt of diftongUI) {
+          if (word.endsWith(dt)) {
+            let dasar = word.slice(0, -2);
+            return convertWord(dasar) + "وي";
+          }
+        }
+        // default: pisah jadi و + ئی (ditulis: وئي)
+        let dasar = word.slice(0, -2);
+        return convertWord(dasar) + "وئي";
+      }
+
+      // ---------- ATURAN IA ----------
+      if (word.endsWith("ia")) {
+        // default: trat sebagai diftong 'يا'
+        // kecuali kata spesifik seperti "biaya" => بيايا (user minta)
+        if (word === "biaya") {
+          return "بيايا";
+        }
+        let dasar = word.slice(0, -2);
+        return convertWord(dasar) + "يا";
+      }
+
+      // ---------- ATURAN UE (kue) ----------
+      if (word === "kue" || word.endsWith("kue")) {
+        // contoh 'kue' -> كُوئي
+        // jika ada prefix, gabungkan
+        let dasar = word.slice(0, -3);
+        return convertWord(dasar) + "كُوئي";
+      }
+
+      // ---------- ATURAN EI (ke-i / se-i) ----------
+      if (word.endsWith("ei")) {
+        // umum: dua suku -> ٓئي (pakai bentuk Anda: سٓئي)
+        let dasar = word.slice(0, -2);
+        return convertWord(dasar) + "ٓئي";
+      }
+
+      // ---------- ATURAN UA (suara dll.) ----------
+      if (word.includes("ua")) {
+        // untuk pasangan ua default -> وا
+        let out = '';
+        let i = 0;
+        while (i < word.length) {
+          if (word.slice(i, i+2) === 'ua') {
+            out += 'وا';
+            i += 2;
+            continue;
+          }
+          let dua = word.slice(i, i+2);
+          if (pegonMap[dua]) { out += pegonMap[dua]; i += 2; continue; }
+          let ch = word[i];
+          out += pegonMap[ch] || ch;
+          i++;
+        }
+        return out;
+      }
+
+      // ---------- DEFAULT: konversi huruf demi huruf ----------
       let hasil = '';
       let i = 0;
 
+      // jika kata dimulai dengan vokal (awalan)
       if (/^[aeiou]/.test(word)) {
         hasil += awalanVokal[word[0]] || word[0];
         i = 1;
@@ -171,18 +327,18 @@
       return hasil;
     }
 
+    // ---------------------------
+    // EVENT + fungsi panggil
+    // ---------------------------
     function convert() {
-      let input = document.getElementById("latinInput").value;
+      let input = document.getElementById("latinInput").value || '';
       let output = convertToPegon(input);
       document.getElementById("pegonOutput").innerText = output;
     }
 
     document.addEventListener("keydown", function(event) {
-      if (event.ctrlKey && event.key === "Enter") {
-        convert();
-      }
+      if (event.ctrlKey && event.key === "Enter") convert();
     });
   </script>
-
 </body>
 </html>
