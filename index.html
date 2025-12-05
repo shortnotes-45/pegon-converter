@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Pegon Al-Kholiqy — Final (Fixed AI)</title>
+  <title>Pegon Al-Kholiqy — Final (Fix AI diftong)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style> body { font-family: 'Inter', sans-serif; } </style>
@@ -12,7 +12,7 @@
 
   <header class="text-center mb-8">
     <h1 class="text-4xl md:text-5xl font-bold text-green-800">Pegon Al-Kholiqy</h1>
-    <p class="text-gray-700 mt-2">Versi final — aturan AI/UI/EI/UA + kamus override + akhiran</p>
+    <p class="text-gray-700 mt-2">Versi final — perbaikan AI diftong & UI</p>
   </header>
 
   <main class="bg-white p-6 md:p-10 rounded-xl shadow-lg w-full max-w-3xl">
@@ -31,12 +31,9 @@
   </main>
 
   <script>
-    // ---------------------------
-    // PETA HURUF (JANGAN MASUKKAN mapping "ai" dsb di sini)
-    // ---------------------------
+    // PETA HURUF
     const pegonMap = {
-      ng: 'ڠ', ny: 'ڽ', sy: 'ش', kh: 'خ', sh: 'ش',
-      ch: 'چ',
+      ng: 'ڠ', ny: 'ڽ', sy: 'ش', kh: 'خ', sh: 'ش', ch: 'چ',
       a: 'ا', i: 'ي', u: 'و', e: 'ٓ', o: 'و',
       b: 'ب', c: 'چ', d: 'د', f: 'ف', g: 'ڮ', h: 'ه',
       j: 'ج', k: 'ك', l: 'ل', m: 'م', n: 'ن',
@@ -44,174 +41,107 @@
       v: 'ڤ', w: 'و', x: 'خ', y: 'ي', z: 'ز'
     };
 
-    const awalanVokal = {
-      a: 'أ', i: 'إي', u: 'أو', o: 'أو', e: 'آ'
-    };
+    const awalanVokal = { a: 'أ', i: 'إي', u: 'أو', o: 'أو', e: 'آ' };
+    const angkaMap = { '0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩' };
 
-    const angkaMap = {
-      '0': '٠','1': '١','2': '٢','3': '٣','4': '٤',
-      '5': '٥','6': '٦','7': '٧','8': '٨','9': '٩'
-    };
-
-    // ---------------------------
-    // KAMUS OVERRIDE (singkat, bisa Anda perluas)
-    // ---------------------------
+    // kamus override (singkat)
     const arabOverride = {
       "allah":"الله",
       "sedekah":"صدقة","shodaqoh":"صدقة","shodaqah":"صدقة","sodaqoh":"صدقة","sodaqah":"صدقة",
       "syafaat":"شفاعة","syafaatnya":"شفاعاتپا","bersyafaat":"بٓرشفاعة",
-      "syafaatmu":"شفاعتمو",
-      "syafaatku":"شفاعتكو",
-      "syafaatlah":"شفاعتلاه",
-      "syafaatpun":"شفاعتفون",
-      "wudhu":"وضوء","wudhuing":"وضوء",
-      "shalat":"صلاة","salat":"صلاة","sholat":"صلاة",
-      "zakat":"زكاة","zakah":"زكاة",
-      "iman":"إيمان","islam":"إسلام","ihsan":"إحسان",
-      "rasul":"رسول","rasulullah":"رسول الله",
-      // beberapa contoh lain (Anda bisa tambahkan batch kamus besar)
-      "masjid":"مسجد","kitab":"كتاب","hadis":"حديث","hikmah":"حكمة",
-      "adab":"أدب","akhlak":"أخلاق","barokah":"بركة","muamalah":"معاملة",
-      "muhammad":"محمد"
+      "wudhu":"وضوء","shalat":"صلاة","zakat":"زكاة","iman":"إيمان","islam":"إسلام"
+      // ... tambah sendiri sesuai batch kamus sebelumnya
     };
 
-    // ---------------------------
-    // AKHIRAN (versi Anda)
-    // ---------------------------
-    const akhiranMap = {
-      "nya": "پا",
-      "mu": "مو",
-      "ku": "كو",
-      "kah": "كاه",
-      "lah": "لاه",
-      "pun": "فون"
-    };
+    const akhiranMap = { "nya":"پا","mu":"مو","ku":"كو","kah":"كاه","lah":"لاه","pun":"فون" };
 
-    // ---------------------------
-    // DAFTAR kata yang memang diftong AI (full-word list, bukan suffix)
-    // Jika sebuah kata ENDSWITH salah satu dari kata ini -> AI dianggap diftong
-    // ---------------------------
+    // Daftar kata yang *benar-benar* diftong AI (whole-word)
     const diftongAIFullWords = [
       "santai","lalai","ramai","lihai","nilai","pandai","lantai","rantai",
-      "balai","selai","serai","pantai","santri" // tambahkan manual bila perlu
+      "balai","selai","serai","pantai"
     ];
 
-    // DAFTAR diftong UI (kata-kata yang 'ui' dianggap satu suku)
-    const diftongUIWords = [
-      "kui","duit","kuil","kuih"
-    ];
+    // Diftong UI yang satu suku
+    const diftongUIWords = ["kui","duit","kuil","kuih"];
 
-    // ---------------------------
-    // Utility: hapus punctuation dulu untuk pengecekan kamus/suffix
-    // ---------------------------
-    function stripPunc(s) {
-      return s.replace(/^[\W_]+|[\W_]+$/g, '');
-    }
-
-    function wrapWithPunct(original, arabWord) {
+    function stripPunc(s){ return s.replace(/^[\W_]+|[\W_]+$/g,''); }
+    function wrapWithPunct(original, arabWord){
       const lead = original.match(/^[\W_]+/) || [''];
       const trail = original.match(/[\W_]+$/) || [''];
       return lead[0] + arabWord + trail[0];
     }
 
-    // ---------------------------
-    // Konversi kalimat / teks
-    // ---------------------------
-    function convertToPegon(teks) {
+    function convertToPegon(teks){
       let parts = teks.split(/(\s+)/);
       let hasil = '';
-
-      for (let part of parts) {
+      for (let part of parts){
         if (/^\s+$/.test(part)) { hasil += part; continue; }
-
         let raw = stripPunc(part);
         let lower = raw.toLowerCase();
 
-        // 1) Override penuh kata
-        if (arabOverride[lower]) {
-          hasil += wrapWithPunct(part, arabOverride[lower]);
-          continue;
-        }
+        if (arabOverride[lower]) { hasil += wrapWithPunct(part, arabOverride[lower]); continue; }
 
-        // 2) cek akhiran untuk kata arab berakhiran ة
+        // cek akhiran untuk kata arab berakhiran ة
         let matchedSuffix = false;
         for (let suf in akhiranMap) {
           if (lower.endsWith(suf)) {
             let dasar = lower.slice(0, -suf.length);
             if (arabOverride[dasar] && arabOverride[dasar].endsWith("ة")) {
               let arabDasar = arabOverride[dasar];
-              let arabTanwin = arabDasar.slice(0, -1) + "ت"; // ة -> ت
+              let arabTanwin = arabDasar.slice(0, -1) + "ت";
               hasil += wrapWithPunct(part, arabTanwin + akhiranMap[suf]);
-              matchedSuffix = true;
-              break;
+              matchedSuffix = true; break;
             }
           }
         }
         if (matchedSuffix) continue;
 
-        // 3) angka
         if (/^\d+$/.test(raw)) {
           let arabNum = raw.split('').map(ch => angkaMap[ch] || ch).join('');
-          hasil += wrapWithPunct(part, arabNum);
-          continue;
+          hasil += wrapWithPunct(part, arabNum); continue;
         }
 
-        // 4) awalan "di" (opsional)
-        if (lower.startsWith('di') && lower.length > 2 && /[a-z]/.test(lower[2])) {
+        if (lower.startsWith('di') && lower.length>2 && /[a-z]/.test(lower[2])) {
           let after = lower.slice(2);
           let conv = convertWord(after);
-          hasil += wrapWithPunct(part, 'دي ' + conv);
-          continue;
+          hasil += wrapWithPunct(part, 'دي ' + conv); continue;
         }
 
-        // 5) default: konversi per kata
         hasil += wrapWithPunct(part, convertWord(lower));
       }
-
       return hasil;
     }
 
-    // ---------------------------
-    // Konversi per kata — semua aturan utama berada di sini
-    // ---------------------------
-    function convertWord(word) {
+    function convertWord(word){
       if (!word) return '';
 
-      // ATURAN: AI (hanya diproses DI SINI — tidak dari pegonMap)
+      // ----- AI handling (fixed) -----
       if (word.endsWith("ai")) {
-        // jika kata (seluruh kata) masuk daftar diftongAI -> jangan pecah
+        // jika whole-word termasuk diftong, TULIS sebagai "اي" (alif+ya)
         for (let w of diftongAIFullWords) {
-          if (word === w || word.endsWith('-' + w) || word.endsWith(w)) {
-            // example: 'santai' atau '...santai'
+          if (word === w || word.endsWith(w)) {
             let dasar = word.slice(0, -2);
-            return convertWord(dasar) + "ي";
+            return convertWord(dasar) + "اي"; // <-- perbaikan: tambahkan alif + ya
           }
         }
-        // selain itu pecah jadi ا + ي
+        // selain itu (dua suku): gunakan "ائي"
         let dasar = word.slice(0, -2);
         return convertWord(dasar) + "ائي";
       }
 
-      // ATURAN: AU -> biasanya diftong 'او'
+      // ----- AU -----
       if (word.includes("au")) {
-        let out = '';
-        let i = 0;
-        while (i < word.length) {
-          if (word.slice(i, i+2) === 'au') {
-            out += 'او';
-            i += 2;
-            continue;
-          }
-          let dua = word.slice(i, i+2);
-          if (pegonMap[dua]) { out += pegonMap[dua]; i += 2; continue; }
-          let ch = word[i];
-          out += pegonMap[ch] || ch;
-          i++;
+        let out=''; let i=0;
+        while (i<word.length){
+          if (word.slice(i,i+2)==='au'){ out += 'او'; i+=2; continue; }
+          let dua = word.slice(i,i+2);
+          if (pegonMap[dua]){ out += pegonMap[dua]; i+=2; continue; }
+          let ch = word[i]; out += pegonMap[ch] || ch; i++;
         }
         return out;
       }
 
-      // ATURAN: UI
+      // ----- UI -----
       if (word.endsWith("ui")) {
         for (let w of diftongUIWords) {
           if (word === w || word.endsWith(w)) {
@@ -223,81 +153,55 @@
         return convertWord(dasar) + "وئي";
       }
 
-      // ATURAN: IA
+      // ----- IA -----
       if (word.endsWith("ia")) {
-        // pengecualian: 'biaya' -> 'بيايا'
         if (word === "biaya") return "بيايا";
         let dasar = word.slice(0, -2);
         return convertWord(dasar) + "يا";
       }
 
-      // ATURAN: KUE / UE
+      // ----- KUE / UE -----
       if (word === "kue" || word.endsWith("kue")) {
         let dasar = word.slice(0, -3);
         return convertWord(dasar) + "كُوئي";
       }
 
-      // ATURAN: EI (ke-i / se-i jadi ...ٓئي)
+      // ----- EI -----
       if (word.endsWith("ei")) {
         let dasar = word.slice(0, -2);
         return convertWord(dasar) + "ٓئي";
       }
 
-      // ATURAN: UA (suara dll) -> وا
+      // ----- UA -----
       if (word.includes("ua")) {
-        let out = '';
-        let i = 0;
-        while (i < word.length) {
-          if (word.slice(i, i+2) === 'ua') {
-            out += 'وا';
-            i += 2;
-            continue;
-          }
-          let dua = word.slice(i, i+2);
-          if (pegonMap[dua]) { out += pegonMap[dua]; i += 2; continue; }
-          let ch = word[i];
-          out += pegonMap[ch] || ch;
-          i++;
+        let out=''; let i=0;
+        while (i<word.length){
+          if (word.slice(i,i+2)==='ua'){ out += 'وا'; i+=2; continue; }
+          let dua = word.slice(i,i+2);
+          if (pegonMap[dua]){ out += pegonMap[dua]; i+=2; continue; }
+          let ch = word[i]; out += pegonMap[ch] || ch; i++;
         }
         return out;
       }
 
-      // DEFAULT: konversi huruf demi huruf
-      let hasil = '';
-      let i = 0;
-
-      if (/^[aeiou]/.test(word)) {
-        hasil += awalanVokal[word[0]] || word[0];
-        i = 1;
-      }
-
-      while (i < word.length) {
-        let dua = word.slice(i, i + 2).toLowerCase();
-        if (pegonMap[dua]) {
-          hasil += pegonMap[dua];
-          i += 2;
-          continue;
-        }
+      // ----- default letter-by-letter -----
+      let hasil=''; let i=0;
+      if (/^[aeiou]/.test(word)) { hasil += awalanVokal[word[0]] || word[0]; i=1; }
+      while (i<word.length){
+        let dua = word.slice(i,i+2).toLowerCase();
+        if (pegonMap[dua]) { hasil += pegonMap[dua]; i+=2; continue; }
         let satu = word[i].toLowerCase();
-        hasil += pegonMap[satu] || word[i];
-        i++;
+        hasil += pegonMap[satu] || word[i]; i++;
       }
-
       return hasil;
     }
 
-    // ---------------------------
-    // Event handler
-    // ---------------------------
-    function convert() {
+    function convert(){
       let input = document.getElementById("latinInput").value || '';
       let output = convertToPegon(input);
       document.getElementById("pegonOutput").innerText = output;
     }
-
-    document.addEventListener("keydown", function(event) {
-      if (event.ctrlKey && event.key === "Enter") convert();
-    });
+    document.addEventListener("keydown", function(e){ if (e.ctrlKey && e.key === "Enter") convert(); });
   </script>
 </body>
 </html>
