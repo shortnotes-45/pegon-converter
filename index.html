@@ -656,6 +656,20 @@ function convertToPegon(teks) {
 
     let raw = stripPunc(part);
     let lower = raw.toLowerCase();
+    
+    /* ==============================================
+   PATCH PEMISAHAN AWALAN "di" (dikembalikan lagi)
+   ============================================== */
+if (lower.startsWith("di") && lower.length > 2) {
+  let sesudah = lower.slice(2);
+  if (!arabOverride[lower]) {
+    let arabDi = "دي";
+    let arabKata = convertWord(sesudah);
+    hasil += wrapWithPunct(part, arabDi + " " + arabKata);
+    continue;
+  }
+}
+
 
     // Override kamus
     if (arabOverride[lower]) {
