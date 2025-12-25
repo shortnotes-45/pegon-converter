@@ -662,14 +662,14 @@ function wrapWithPunct(original, arab){
    KONVERSI TEKS
    =============================== */
 function convertToPegon(teks) {
-  let processed = new Set(); // 🔒 penanda kata yang sudah diproses
-
   let parts = teks.split(/(\s+)/);
   let hasil = "";
 
   for (let part of parts) {
-    if (/^\s+$/.test(part)) { hasil += part; continue; }
-
+    if (/^\s+$/.test(part)) {
+      hasil += part;
+      continue;
+    }
     let raw = stripPunc(part);
     let lower = raw.toLowerCase();
     // 🔒 Jika kata ini sudah pernah diproses, tampilkan apa adanya
