@@ -470,6 +470,7 @@ const arabOverride = {
   "tayamum": "تيمم",
   "tarawih": "تراويح","terawih": "تراويح","tarowih": "تراويح",
   "tarbiyah": "تربية",
+  "tuban": "طوبان",
   "tartil": "ترتيل",
   "tawaf": "طواف",
   "thariqah": "طريقة",
@@ -733,6 +734,9 @@ processed.add(part);
    =============================== */
 function convertWord(word){
   if (!word) return "";
+
+  // ⛔ PENGAMAN MUTLAK: jika sudah huruf Arab, JANGAN diproses lagi
+  if (/[\u0600-\u06FF]/.test(word)) return word;
 
   /* ------------------------------------
      PATCH #1 — SESUAI (pola "uai")
