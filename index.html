@@ -12,7 +12,7 @@
 
   <header class="text-center mb-8">
     <h1 class="text-4xl md:text-5xl font-bold text-green-800">Pegon Al-Kholiqy</h1>
-    <p class="text-gray-700 mt-2">Dipersembahkan untuk mahasantri Ma'had Aly Al Hidayah</p>
+    <p class="text-gray-700 mt-2">Hub.0822 6406 7092 apabila terjadi bug atau kritik dan saran</p>
   </header>
 
   <main class="bg-white p-6 md:p-10 rounded-xl shadow-lg w-full max-w-3xl">
@@ -667,59 +667,47 @@ function convertToPegon(teks) {
   let hasil = "";
 
   for (let part of parts) {
+
+    // spasi
     if (/^\s+$/.test(part)) {
+      hasil += part;
+      continue;
+    }
+
+    // 🔒 JIKA ADA HURUF ARAB → BIARKAN APA ADANYA
+    if (/[\u0600-\u06FF]/.test(part)) {
       hasil += part;
       continue;
     }
 
     let raw = stripPunc(part);
     let lower = raw.toLowerCase();
-    if (/[\u0600-\u06FF]/.test(raw)) {
-  hasil += part;
-  continue;
-    }
-    // 1️⃣ KAMUS (PALING AMAN & PALING ATAS)
+
+    // kamus
     if (arabOverride[lower]) {
       hasil += wrapWithPunct(part, arabOverride[lower]);
       continue;
     }
 
-    // 2️⃣ PATCH awalan "di-" (SETELAH kamus)
-    if (
-      lower.startsWith("di") &&
-      lower.length > 2 &&
-      !arabOverride[lower]
-    ) {
-      let sesudah = lower.slice(2);
-      hasil += wrapWithPunct(part, "دي " + convertWord(sesudah));
-      continue;
-    }
-
-    // 3️⃣ Akhiran -nya / -mu / -ku (ta marbuthah)
-    let selesai = false;
-    for (let suf in akhiranMap) {
-      if (lower.endsWith(suf)) {
-        let dasar = lower.slice(0, -suf.length);
-        if (arabOverride[dasar] && arabOverride[dasar].endsWith("ة")) {
-          let temp = arabOverride[dasar].slice(0, -1) + "ت";
-          hasil += wrapWithPunct(part, temp + akhiranMap[suf]);
-          selesai = true;
-          break;
-        }
-      }
-    }
-    if (selesai) continue;
-
-    // 4️⃣ Angka
-    if (/^\d+$/.test(raw)) {
+    // awalan di-
+    if (lower.startsWith("di") && lower.length > 2) {
       hasil += wrapWithPunct(
         part,
-        raw.split('').map(ch => angkaMap[ch] || ch).join('')
+        "دي " + convertWord(lower.slice(2))
       );
       continue;
     }
 
-    // 5️⃣ DEFAULT (PALING TERAKHIR)
+    // angka
+    if (/^\d+$/.test(raw)) {
+      hasil += wrapWithPunct(
+        part,
+        raw.split('').map(n => angkaMap[n] || n).join('')
+      );
+      continue;
+    }
+
+    // default
     hasil += wrapWithPunct(part, convertWord(lower));
   }
 
