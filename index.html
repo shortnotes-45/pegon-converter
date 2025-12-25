@@ -670,60 +670,53 @@ function convertToPegon(teks) {
       hasil += part;
       continue;
     }
+
     let raw = stripPunc(part);
     let lower = raw.toLowerCase();
-    // 🔒 Jika kata ini sudah pernah diproses, tampilkan apa adanya
-if (processed.has(part)) {
-  hasil += part;
-  continue;
-}
 
-    
-    /* ==============================================
-   PATCH PEMISAHAN AWALAN "di" (dikembalikan lagi)
-   ============================================== */
-if (lower.startsWith("di") && lower.length > 2 && !arabOverride[lower]) {
-  let sesudah = lower.slice(2);
-  if (!arabOverride[lower]) {
-    let arabDi = "دي";
-    let arabKata = convertWord(sesudah);
-    hasil += wrapWithPunct(part, arabDi + " " + arabKata);
-    continue;
-  }
-}
-
-
-    // Override kamus
+    // 1️⃣ KAMUS (PALING AMAN & PALING ATAS)
     if (arabOverride[lower]) {
       hasil += wrapWithPunct(part, arabOverride[lower]);
       continue;
     }
 
-    // Akhiran -nya dll untuk kata Arab ta marbuthah
-    let matchedSuffix = false;
+    // 2️⃣ PATCH awalan "di-" (SETELAH kamus)
+    if (
+      lower.startsWith("di") &&
+      lower.length > 2 &&
+      !arabOverride[lower]
+    ) {
+      let sesudah = lower.slice(2);
+      hasil += wrapWithPunct(part, "دي " + convertWord(sesudah));
+      continue;
+    }
+
+    // 3️⃣ Akhiran -nya / -mu / -ku (ta marbuthah)
+    let selesai = false;
     for (let suf in akhiranMap) {
       if (lower.endsWith(suf)) {
         let dasar = lower.slice(0, -suf.length);
         if (arabOverride[dasar] && arabOverride[dasar].endsWith("ة")) {
-          let temp = arabOverride[dasar].slice(0,-1) + "ت";
+          let temp = arabOverride[dasar].slice(0, -1) + "ت";
           hasil += wrapWithPunct(part, temp + akhiranMap[suf]);
-          matchedSuffix = true;
+          selesai = true;
+          break;
         }
       }
     }
-    if (matchedSuffix) continue;
+    if (selesai) continue;
 
-    // Angka
+    // 4️⃣ Angka
     if (/^\d+$/.test(raw)) {
-      hasil += wrapWithPunct(part,
+      hasil += wrapWithPunct(
+        part,
         raw.split('').map(ch => angkaMap[ch] || ch).join('')
       );
       continue;
     }
 
+    // 5️⃣ DEFAULT (PALING TERAKHIR)
     hasil += wrapWithPunct(part, convertWord(lower));
-processed.add(part);
-
   }
 
   return hasil;
