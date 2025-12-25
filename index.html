@@ -673,7 +673,10 @@ function convertToPegon(teks) {
 
     let raw = stripPunc(part);
     let lower = raw.toLowerCase();
-
+    if (/[\u0600-\u06FF]/.test(raw)) {
+  hasil += part;
+  continue;
+    }
     // 1️⃣ KAMUS (PALING AMAN & PALING ATAS)
     if (arabOverride[lower]) {
       hasil += wrapWithPunct(part, arabOverride[lower]);
